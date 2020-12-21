@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using MediatR;
+using Taskr.Domain;
 
-namespace Taskr.Queries.Task
+namespace Taskr.Queries
 {
-    public class GetAllTasksQuery : IRequest<List<Domain.Task>>
+    public class GetAllTasksQuery : IRequest<List<Task>>
     {
         
     }

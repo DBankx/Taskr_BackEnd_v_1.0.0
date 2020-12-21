@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Taskr.Persistance;
 
 namespace Taskr.Api
 {
@@ -13,7 +16,25 @@ namespace Taskr.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            using (var scopedService = host.Services.CreateScope())
+            {
+                var services = scopedService.ServiceProvider;
+
+                try
+                {
+                    var context = services.GetRequiredService<DataContext>();
+                    context.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError("Error occurred during migration", ex);
+                }
+            }
+            
+            host.RunAsync().Wait();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

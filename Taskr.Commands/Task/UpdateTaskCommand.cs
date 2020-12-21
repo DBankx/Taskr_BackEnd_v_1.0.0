@@ -1,15 +1,14 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using MediatR;
 
-namespace Taskr.Domain
+namespace Taskr.Commands.Task
 {
-    public class Task
+    public class UpdateTaskCommand : IRequest<bool>
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        
-        [Column(TypeName = "decimal(18,2)")] 
         public decimal? InitialPrice { get; set; }
+
     }
 }

@@ -1,31 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Taskr.Domain;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Taskr.Persistance;
+using Task = Taskr.Domain.Task;
 
 namespace Taskr.RepositoryServices.TaskService
 {
     public class TaskService : ITaskService
     {
-        private readonly List<Task> _tasks = new List<Task>
-        {
-            new Task{Id = Guid.Parse("64fa643f-2d35-46e7-b3f8-31fa673d719b"), Title = "Nick Chapsas", Description = "New Dami Task 1 desc", InitialPrice = 20.30m},
-            new Task{Id = Guid.Parse("fc7cdfc4-f407-4955-acbe-98c666ee51a2"), 
-                InitialPrice = 10.30m,
-                Description = "new Dami Task 2 desc",
-                Title = "New Dami task 2"}
-        };
+        private readonly DataContext _context;
 
-        public List<Task> GetAllTasks()
+        public TaskService(DataContext context)
         {
-            return _tasks;
+            _context = context;
+        } 
+        
+        public async Task<List<Task>> GetAllTasksAsync()
+        {
+            return await _context.Tasks.ToListAsync();
         }
 
-        public Task GetTaskById(Guid id)
+        public async Task<Domain.Task> GetTaskByIdAsync(Guid id)
         {
-            var task = _tasks.SingleOrDefault(x => x.Id == id);
+            var task = await _context.Tasks.SingleOrDefaultAsync(x => x.Id == id);
 
             return task;
         }
+
+        public async Task<bool> DeleteTaskAsync(Guid id)
+        {
+            var task = await GetTaskByIdAsync(id);
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            _context.Tasks.Remove(task);
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> CreateTaskAsync(Task task)
+        {
+            await _context.Tasks.AddAsync(task);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+       
     }
 }

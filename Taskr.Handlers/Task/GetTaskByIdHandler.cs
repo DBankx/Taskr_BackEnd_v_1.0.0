@@ -7,18 +7,18 @@ using Taskr.RepositoryServices.TaskService;
 
 namespace Taskr.Handlers.Task
 {
-    public class GetAllTasksHandler : IRequestHandler<GetAllTasksQuery, List<Domain.Task>>
+    public class GetTaskByIdHandler : IRequestHandler<GetTaskByIdQuery, Domain.Task>
     {
         private readonly ITaskService _taskService;
 
-        public GetAllTasksHandler(ITaskService taskService)
+        public GetTaskByIdHandler(ITaskService taskService)
         {
             _taskService = taskService;
         }
         
-        public async Task<List<Domain.Task>> Handle(GetAllTasksQuery request, CancellationToken cancellationToken)
+        public async  Task<Domain.Task> Handle(GetTaskByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _taskService.GetAllTasksAsync();
+            return await _taskService.GetTaskByIdAsync(request.TaskId);
         }
     }
 }

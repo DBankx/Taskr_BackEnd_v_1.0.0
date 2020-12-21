@@ -7,9 +7,11 @@
     <ItemGroup>
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Taskr.Commands\Taskr.Commands.csproj" />
       <ProjectReference Include="..\Taskr.Queries\Taskr.Queries.csproj" />
       <ProjectReference Include="..\Taskr.RepositoryServices\Taskr.RepositoryServices.csproj" />
     </ItemGroup>
