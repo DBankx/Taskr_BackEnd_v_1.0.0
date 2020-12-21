@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskr.Handlers", "Taskr.Han
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskr.Commands", "Taskr.Commands\Taskr.Commands.csproj", "{B782052E-FEBD-418C-84DE-6EF21D96FE17}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskr.Validation", "Taskr.Validation\Taskr.Validation.csproj", "{F81B2A29-F6BE-4AD9-BEDF-845618AC2A85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{B782052E-FEBD-418C-84DE-6EF21D96FE17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B782052E-FEBD-418C-84DE-6EF21D96FE17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B782052E-FEBD-418C-84DE-6EF21D96FE17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F81B2A29-F6BE-4AD9-BEDF-845618AC2A85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F81B2A29-F6BE-4AD9-BEDF-845618AC2A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F81B2A29-F6BE-4AD9-BEDF-845618AC2A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F81B2A29-F6BE-4AD9-BEDF-845618AC2A85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

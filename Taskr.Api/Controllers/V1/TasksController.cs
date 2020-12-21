@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Task;
 using Taskr.Queries;
@@ -9,8 +10,9 @@ using Task = Taskr.Domain.Task;
 
 namespace Taskr.Api.Controllers.V1
 {
+    [Authorize]
     [ApiController]
-    [Route("api/v1/[Controller]")]
+    [Route("api/v1/[controller]")]
     public class TasksController : ControllerBase
     {
         private readonly IMediator _mediator;

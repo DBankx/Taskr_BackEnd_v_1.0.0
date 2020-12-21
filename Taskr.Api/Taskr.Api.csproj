@@ -5,10 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
         <PackageReference Include="MediatR" Version="9.0.0" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" NoWarn="NU1605" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0" NoWarn="NU1605" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1">
           <PrivateAssets>all</PrivateAssets>
@@ -19,7 +21,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Taskr.Handlers\Taskr.Handlers.csproj" />
+      <ProjectReference Include="..\Taskr.Infrastructure\Taskr.Infrastructure.csproj" />
       <ProjectReference Include="..\Taskr.Persistance\Taskr.Persistance.csproj" />
+      <ProjectReference Include="..\Taskr.Validation\Taskr.Validation.csproj" />
     </ItemGroup>
 
 </Project>
