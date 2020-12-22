@@ -9,18 +9,18 @@ namespace Taskr.Handlers.Task
 {
     public class UpdateTaskHandler : IRequestHandler<UpdateTaskCommand, bool>
     {
-        private readonly ITaskService _taskService;
+        private readonly IJobService _jobService;
         private readonly DataContext _context;
 
-        public UpdateTaskHandler(ITaskService taskService, DataContext context)
+        public UpdateTaskHandler(IJobService jobService, DataContext context)
         {
-            _taskService = taskService;
+            _jobService = jobService;
             _context = context;
         }
         
         public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
         {
-            var task = await _taskService.GetTaskByIdAsync(request.Id);
+            var task = await _jobService.GetTaskByIdAsync(request.Id);
             if (task == null)
             {
                 return false;

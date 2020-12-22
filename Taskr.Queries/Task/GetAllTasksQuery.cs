@@ -4,7 +4,7 @@ using Taskr.Domain;
 
 namespace Taskr.Queries
 {
-    public class GetAllTasksQuery : IRequest<List<Task>>
+    public class GetAllTasksQuery : IRequest<List<Job>>
     {
         
     }

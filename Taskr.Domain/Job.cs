@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Taskr.Domain
 {
-    public class Task
+    public class Job
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

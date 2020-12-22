@@ -12,13 +12,13 @@ namespace Taskr.Persistance
             
         }
 
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Task>().HasData(new Task
+            modelBuilder.Entity<Job>().HasData(new Job
             {
                 Id = Guid.Parse("64fa643f-2d35-46e7-b3f8-31fa673d719b"),
                 Title = "Garden Trimming in Lagos Ajah",

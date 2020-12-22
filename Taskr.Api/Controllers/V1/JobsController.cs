@@ -6,18 +6,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Task;
 using Taskr.Queries;
-using Task = Taskr.Domain.Task;
 
 namespace Taskr.Api.Controllers.V1
 {
     [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class TasksController : ControllerBase
+    public class JobsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public TasksController(IMediator mediator)
+        public JobsController(IMediator mediator)
         {
             _mediator = mediator;
         }

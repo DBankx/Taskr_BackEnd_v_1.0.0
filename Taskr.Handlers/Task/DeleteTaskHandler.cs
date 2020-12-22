@@ -8,16 +8,16 @@ namespace Taskr.Handlers.Task
 {
     public class DeleteTaskHandler : IRequestHandler<DeleteTaskCommand, bool>
     {
-        private readonly ITaskService _taskService;
+        private readonly IJobService _jobService;
 
-        public DeleteTaskHandler(ITaskService taskService)
+        public DeleteTaskHandler(IJobService jobService)
         {
-            _taskService = taskService;
+            _jobService = jobService;
         }
         
         public Task<bool> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
         {
-            return _taskService.DeleteTaskAsync(request.TaskId);
+            return _jobService.DeleteTaskAsync(request.TaskId);
         }
     }
 }

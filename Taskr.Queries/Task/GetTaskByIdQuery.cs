@@ -4,7 +4,7 @@ using Taskr.Domain;
 
 namespace Taskr.Queries
 {
-    public class GetTaskByIdQuery : IRequest<Task>
+    public class GetTaskByIdQuery : IRequest<Job>
     {
         public Guid TaskId { get; set; }
 

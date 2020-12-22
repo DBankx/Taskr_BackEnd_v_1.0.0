@@ -111,7 +111,7 @@ namespace Taskr.Api
             });
 
             // DI services
-            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IJobService, JobService>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IAuthService, AuthService>();
 

@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Taskr.Domain;
 using Taskr.Persistance;
-using Task = Taskr.Domain.Task;
 
 namespace Taskr.RepositoryServices.TaskService
 {
-    public class TaskService : ITaskService
+    public class JobService : IJobService
     {
         private readonly DataContext _context;
 
-        public TaskService(DataContext context)
+        public JobService(DataContext context)
         {
             _context = context;
         } 
         
-        public async Task<List<Task>> GetAllTasksAsync()
+        public async Task<List<Job>> GetAllTasksAsync()
         {
-            return await _context.Tasks.ToListAsync();
+            return await _context.Jobs.ToListAsync();
         }
 
-        public async Task<Domain.Task> GetTaskByIdAsync(Guid id)
+        public async Task<Domain.Job> GetTaskByIdAsync(Guid id)
         {
-            var task = await _context.Tasks.SingleOrDefaultAsync(x => x.Id == id);
+            var task = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == id);
 
             return task;
         }
@@ -38,14 +38,14 @@ namespace Taskr.RepositoryServices.TaskService
                 return false;
             }
 
-            _context.Tasks.Remove(task);
+            _context.Jobs.Remove(task);
 
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> CreateTaskAsync(Task task)
+        public async Task<bool> CreateTaskAsync(Job job)
         {
-            await _context.Tasks.AddAsync(task);
+            await _context.Jobs.AddAsync(job);
             return await _context.SaveChangesAsync() > 0;
         }
 
