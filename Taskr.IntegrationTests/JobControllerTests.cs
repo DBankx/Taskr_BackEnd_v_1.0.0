@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Taskr.Domain;
+using Taskr.Dtos.ApiResponse;
 using Xunit;
 
 namespace Taskr.IntegrationTests
@@ -25,8 +26,8 @@ namespace Taskr.IntegrationTests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var json = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<List<Domain.Job>>(json);
-            data.Count.Should().BeGreaterThan(0);
+            var apiResponse = JsonConvert.DeserializeObject<ApiSuccessResponse<List<Domain.Job>>>(json);
+            apiResponse.Data.Count.Should().BeGreaterThan(0);
         }
 
         [Fact]
@@ -43,11 +44,12 @@ namespace Taskr.IntegrationTests
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        [Fact(Skip = "Creates new jobs in the database")]
-        public async Task CreateTask_Should_create_a_new_Task()
+        [Fact]
+        public async Task CreateTask_Should_Return_UnAuthorized_with_Fake_Token()
         {
             // Arrange
             client.SetFakeBearerToken((object) token);
+            
             var job = new Job
             {
                 Title = "New test job",
@@ -59,7 +61,7 @@ namespace Taskr.IntegrationTests
             var response = await client.PostAsJsonAsync("api/v1/jobs", job);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
     }
