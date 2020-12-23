@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Taskr.Commands.Auth;
@@ -26,7 +27,8 @@ namespace Taskr.Handlers.Auth
                 LastName = request.LastName,
                 Bio = request.Bio,
                 City = request.City,
-                UserName = request.Username
+                UserName = request.Username,
+                CreatedAt = DateTime.Now
             };
 
             return await _authService.SignUpAsync(user, request.Password);

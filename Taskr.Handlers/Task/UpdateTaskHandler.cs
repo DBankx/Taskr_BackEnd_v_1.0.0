@@ -20,15 +20,15 @@ namespace Taskr.Handlers.Task
         
         public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
         {
-            var task = await _jobService.GetTaskByIdAsync(request.Id);
-            if (task == null)
+            var task = await _jobService.GetJobByIdAsync(request.Id);
+            if (task.Data == null)
             {
                 return false;
             }
 
-            task.Description = request.Description ?? task.Description;
-            task.Title = request.Title ?? task.Title;
-            task.InitialPrice = request.InitialPrice ?? task.InitialPrice;
+            task.Data.Description = request.Description ?? task.Data.Description;
+            task.Data.Title = request.Title ?? task.Data.Title;
+            task.Data.InitialPrice = request.InitialPrice ?? task.Data.InitialPrice;
 
             return await _context.SaveChangesAsync() > 0;
         }

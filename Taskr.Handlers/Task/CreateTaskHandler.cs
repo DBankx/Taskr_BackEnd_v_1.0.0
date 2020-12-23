@@ -2,11 +2,12 @@
 using System.Threading.Tasks;
 using MediatR;
 using Taskr.Commands.Task;
+using Taskr.Dtos.ApiResponse;
 using Taskr.RepositoryServices.TaskService;
 
 namespace Taskr.Handlers.Task
 {
-    public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, bool>
+    public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, ApiResponse<object>>
     {
         private readonly IJobService _jobService;
 
@@ -15,7 +16,7 @@ namespace Taskr.Handlers.Task
             _jobService = jobService;
         }
         
-        public async Task<bool> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<object>> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
         {
             var task = new Domain.Job
             {
@@ -24,7 +25,7 @@ namespace Taskr.Handlers.Task
                 InitialPrice = request.InitialPrice
             };
             
-            return await _jobService.CreateTaskAsync(task);
+            return await _jobService.CreateJobAsync(task, request.UserId);
         }
     }
 }

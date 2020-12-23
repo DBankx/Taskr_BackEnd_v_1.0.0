@@ -11,5 +11,7 @@ namespace Taskr.Domain
         
         [Column(TypeName = "decimal(18,2)")] 
         public decimal? InitialPrice { get; set; }
+        
+        public ApplicationUser User { get; set; }
     }
 }

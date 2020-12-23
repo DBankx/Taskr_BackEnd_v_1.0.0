@@ -2,12 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Taskr.Dtos.ApiResponse;
 using Taskr.Queries;
 using Taskr.RepositoryServices.TaskService;
 
 namespace Taskr.Handlers.Task
 {
-    public class GetTaskByIdHandler : IRequestHandler<GetTaskByIdQuery, Domain.Job>
+    public class GetTaskByIdHandler : IRequestHandler<GetTaskByIdQuery, ApiResponse<Domain.Job>>
     {
         private readonly IJobService _jobService;
 
@@ -16,9 +17,9 @@ namespace Taskr.Handlers.Task
             _jobService = jobService;
         }
         
-        public async  Task<Domain.Job> Handle(GetTaskByIdQuery request, CancellationToken cancellationToken)
+        public async  Task<ApiResponse<Domain.Job>> Handle(GetTaskByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _jobService.GetTaskByIdAsync(request.TaskId);
+            return await _jobService.GetJobByIdAsync(request.TaskId);
         }
     }
 }

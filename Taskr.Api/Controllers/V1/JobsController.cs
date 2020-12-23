@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Task;
+using Taskr.Domain;
+using Taskr.Dtos.ApiResponse;
+using Taskr.Infrastructure.ExtensionMethods;
 using Taskr.Queries;
+using Taskr.RepositoryServices.TaskService;
 
 namespace Taskr.Api.Controllers.V1
 {
@@ -15,10 +20,12 @@ namespace Taskr.Api.Controllers.V1
     public class JobsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IJobService _jobService;
 
-        public JobsController(IMediator mediator)
+        public JobsController(IMediator mediator, IJobService jobService)
         {
             _mediator = mediator;
+            _jobService = jobService;
         }
 
         [HttpGet]
@@ -26,50 +33,59 @@ namespace Taskr.Api.Controllers.V1
         {
             var query = new GetAllTasksQuery();
             var result = await _mediator.Send(query);
-            return Ok(result);
+            return Ok(new ApiSuccessResponse<List<Job>>(result.Data));
         }
 
-        [HttpGet("{taskId}")]
-        public async Task<IActionResult> GetTaskById(Guid taskId)
+        [HttpGet("{jobId}")]
+        public async Task<IActionResult> GetTaskById(Guid jobId)
         {
-            var query = new GetTaskByIdQuery(taskId);
+            var query = new GetTaskByIdQuery(jobId);
             var result = await _mediator.Send(query);
-            if (result == null)
+            if (result.Success == false)
             {
-                return NotFound(new {error = "Resource not found"});
+                return NotFound(new ApiErrorResponse(result.Errors));
             }
-            return Ok(result);
+            return Ok(new ApiSuccessResponse<Job>(result.Data));
         }
 
-        [HttpDelete("{taskId}")]
-        public async Task<IActionResult> DeleteTask(Guid taskId)
+        [HttpDelete("{jobId}")]
+        public async Task<IActionResult> DeleteTask(Guid jobId)
         {
-            var command = new DeleteTaskCommand(taskId);
+            var command = new DeleteTaskCommand(jobId, HttpContext.GetCurrentUserId());
             var result = await _mediator.Send(command);
-            if (result == false)
+            if (result.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return NotFound(new {error = "Resource not found"});
+                return Unauthorized(new ApiErrorResponse(result.Errors));
             }
 
-            return NoContent();
+            if (result.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(new ApiErrorResponse(result.Errors));
+            }
+
+            return Ok(new ApiSuccessResponse<object>(result.Data));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand command)
         {
+            command.UserId = HttpContext.GetCurrentUserId();
             var result = await _mediator.Send(command);
-            if (!result)
+            if (result.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return BadRequest(new {error = "Error occurred during creation of task"});
+                return Unauthorized(new ApiErrorResponse(result.Errors));
             }
 
-            return CreatedAtAction("GetTaskById", new {taskId = command.Id},  new {message = "Task created successfully"});
+            if (result.StatusCode == HttpStatusCode.InternalServerError)
+                return StatusCode((int) HttpStatusCode.InternalServerError, new ApiErrorResponse(result.Errors));
+
+            return CreatedAtAction("GetTaskById", new {jobId = command.Id},  new ApiSuccessResponse<object>(result.Data));
         }
 
-        [HttpPut("{taskId}")]
-        public async Task<IActionResult> UpdateTask(Guid taskId, [FromBody] UpdateTaskCommand command)
+        [HttpPut("{jobId}")]
+        public async Task<IActionResult> UpdateTask(Guid jobId, [FromBody] UpdateTaskCommand command)
         {
-            command.Id = taskId;
+            command.Id = jobId;
             var result = await _mediator.Send(command);
             if (!result)
             {
@@ -78,5 +94,6 @@ namespace Taskr.Api.Controllers.V1
 
             return Ok(command);
         }
+        
     }
 }

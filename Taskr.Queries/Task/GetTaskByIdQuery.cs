@@ -1,10 +1,11 @@
 ﻿using System;
 using MediatR;
 using Taskr.Domain;
+using Taskr.Dtos.ApiResponse;
 
 namespace Taskr.Queries
 {
-    public class GetTaskByIdQuery : IRequest<Job>
+    public class GetTaskByIdQuery : IRequest<ApiResponse<Job>>
     {
         public Guid TaskId { get; set; }
 
