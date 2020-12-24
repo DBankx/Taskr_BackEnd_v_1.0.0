@@ -30,15 +30,16 @@ namespace Taskr.IntegrationTests
 
         public async Task CreateUserAndAuthorizeAsync()
         {
+            var randomGuid = Guid.NewGuid();
             var response = await client.PostAsJsonAsync("api/v1/auth/signup", new SignUpCommand
             {
                 Bio = "i am a test",
                 City = "test city",
-                Email = "integration@test.com",
+                Email = $"{randomGuid.ToString()}@test.com",
                 Password = "Pa$$w0rd",
                 FirstName = "integration",
                 LastName = "test",
-                Username = "intTest"
+                Username = $"{randomGuid.ToString()}" 
             });
 
             var authResponse = await response.Content.ReadAsStringAsync();
