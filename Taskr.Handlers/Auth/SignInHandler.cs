@@ -1,24 +1,62 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Taskr.Commands.Auth;
+using Taskr.Domain;
 using Taskr.Dtos.Auth;
-using Taskr.RepositoryServices.AuthService;
+using Taskr.Infrastructure.Jwt;
+using Taskr.Persistance;
 
 namespace Taskr.Handlers.Auth
 {
     public class SignInHandler : IRequestHandler<SignInCommand, AuthResponse>
     {
-        private readonly IAuthService _authService;
+        private readonly IJwtGenerator _jwtGenerator;
+        private readonly DataContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public SignInHandler(IAuthService authService)
+        public SignInHandler(IJwtGenerator jwtGenerator, DataContext context, UserManager<ApplicationUser> userManager)
         {
-            _authService = authService;
+            _jwtGenerator = jwtGenerator;
+            _context = context;
+            _userManager = userManager;
         }
         
         public async Task<AuthResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            return await _authService.SignInAsync(request.Email, request.Password);
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return new AuthResponse
+                {
+                    Errors = new[] {"Invalid credentials"}
+                };
+            }
+
+            var passwordMatch = await _userManager.CheckPasswordAsync(user, request.Password);
+            
+            if (!passwordMatch)
+            {
+                return new AuthResponse
+                {
+                    Errors = new[] {"Invalid credentials"}
+                };
+            }
+
+            var authUserResponse = new AuthUserResponse
+            {
+                Email = user.Email,
+                Username = user.UserName
+            };
+
+            return new AuthResponse
+            {
+                Success = true,
+                Token = _jwtGenerator.GenerateToken(user),
+                User = authUserResponse
+            };
         }
     }
 }

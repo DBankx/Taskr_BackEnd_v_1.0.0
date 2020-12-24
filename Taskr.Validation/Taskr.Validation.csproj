@@ -12,4 +12,8 @@
       <ProjectReference Include="..\Taskr.Commands\Taskr.Commands.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Bid" />
+    </ItemGroup>
+
 </Project>

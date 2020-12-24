@@ -26,8 +26,8 @@ namespace Taskr.IntegrationTests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var json = await response.Content.ReadAsStringAsync();
-            var apiResponse = JsonConvert.DeserializeObject<ApiSuccessResponse<List<Domain.Job>>>(json);
-            apiResponse.Data.Count.Should().BeGreaterThan(0);
+            var apiResponse = JsonConvert.DeserializeObject<List<Domain.Job>>(json);
+            apiResponse.Count.Should().BeGreaterThan(0);
         }
 
         [Fact]
@@ -35,10 +35,10 @@ namespace Taskr.IntegrationTests
         {
             // Arrange
             client.SetFakeBearerToken((object) token);
-            var taskId = Guid.NewGuid();
+            var jobId = Guid.NewGuid();
             
             //Act
-            var response = await client.GetAsync($"/api/v1/jobs/{taskId}");
+            var response = await client.GetAsync($"/api/v1/jobs/{jobId}");
             
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);

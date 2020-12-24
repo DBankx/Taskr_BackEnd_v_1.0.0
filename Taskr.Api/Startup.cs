@@ -21,9 +21,10 @@ using Microsoft.OpenApi.Models;
 using Taskr.Domain;
 using Taskr.Handlers.Task;
 using Taskr.Infrastructure.Jwt;
+using Taskr.Infrastructure.Middlewares;
+using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
-using Taskr.RepositoryServices.AuthService;
-using Taskr.RepositoryServices.TaskService;
+using Taskr.RepositoryServices.BidService;
 using Taskr.Validation.Auth;
 
 namespace Taskr.Api
@@ -79,8 +80,17 @@ namespace Taskr.Api
                     }
                 });
             });
-            services.AddMediatR(typeof(GetAllTasksHandler).Assembly);
+            services.AddMediatR(typeof(GetAllJobsHandler).Assembly);
 
+            // CORS
+            services.AddCors(option =>
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
+            
             // EntityFramework
             services.AddDbContext<DataContext>(options =>
             {
@@ -111,28 +121,31 @@ namespace Taskr.Api
             });
 
             // DI services
-            services.AddScoped<IJobService, JobService>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IBidService, BidService>();
+            services.AddScoped<IUserAccess, UserAccess>();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Taskr_Api v1"));
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
-            app.UseAuthentication();
-            
             app.UseRouting();
 
+            app.UseCors();
+            
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

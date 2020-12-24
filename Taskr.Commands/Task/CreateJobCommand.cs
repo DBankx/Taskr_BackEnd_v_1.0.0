@@ -4,7 +4,10 @@ using Taskr.Dtos.ApiResponse;
 
 namespace Taskr.Commands.Task
 {
-    public class CreateTaskCommand : IRequest<ApiResponse<object>>
+    /// <summary>
+    /// TODO - add validation
+    /// </summary>
+    public class CreateJobCommand : IRequest
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

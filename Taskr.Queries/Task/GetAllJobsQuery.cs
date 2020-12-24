@@ -3,9 +3,9 @@ using MediatR;
 using Taskr.Domain;
 using Taskr.Dtos.ApiResponse;
 
-namespace Taskr.Queries
+namespace Taskr.Queries.Bid
 {
-    public class GetAllTasksQuery : IRequest<ApiResponse<List<Job>>>
+    public class GetAllJobsQuery : IRequest<List<Job>>
     {
         
     }
