@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Taskr.Commands.Task;
 using Taskr.Domain;
-using Taskr.Dtos.ApiResponse;
 using Taskr.Dtos.Errors;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
@@ -32,6 +31,7 @@ namespace Taskr.Handlers.Task
 
             var job = new Job
             {
+                Id = request.Id,
                 Title = request.Title,
                 Description = request.Description,
                 InitialPrice = request.InitialPrice,

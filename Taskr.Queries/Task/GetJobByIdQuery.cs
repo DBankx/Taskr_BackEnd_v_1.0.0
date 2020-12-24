@@ -1,7 +1,6 @@
 ﻿using System;
 using MediatR;
 using Taskr.Domain;
-using Taskr.Dtos.ApiResponse;
 
 namespace Taskr.Queries.Bid
 {

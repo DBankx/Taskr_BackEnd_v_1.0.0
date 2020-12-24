@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Taskr.Dtos.ApiResponse;
 using Taskr.Dtos.Errors;
 using Taskr.Persistance;
 using Taskr.Queries.Bid;

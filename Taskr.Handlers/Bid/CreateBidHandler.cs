@@ -6,14 +6,15 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Taskr.Commands.Bid;
 using Taskr.Domain;
-using Taskr.Dtos.ApiResponse;
 using Taskr.Dtos.Errors;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
-using Taskr.RepositoryServices.BidService;
 
 namespace Taskr.Handlers.Bid
 {
+    /// <summary>
+    /// TODO - creator of jobs not allowed to set bids
+    /// </summary>
     public class CreateBidHandler : IRequestHandler<CreateBidCommand>
     {
         private readonly DataContext _context;
@@ -62,23 +63,13 @@ namespace Taskr.Handlers.Bid
                 Description = request.Description,
                 Price = request.Price,
                 UserId = user.Id,
-                User = user
+                User = user,
+                Id = request.Id
             };
 
-            var newBid = new Domain.Bid
-            {
-                Status = BidStatus.Submitted,
-                CreatedAt = DateTime.Now,
-                JobId = job.Id,
-                UserId = user.Id,
-                Description = request.Description,
-                Price = request.Price,
-                Job = job
-            };
+            await _context.Bids.AddAsync(bid, cancellationToken);
 
-            await _context.Bids.AddAsync(bid);
-
-            var created = await _context.SaveChangesAsync() > 0;
+            var created = await _context.SaveChangesAsync(cancellationToken) > 0;
             if (!created)
             {
                 throw new Exception("Error occurred while creating bid");

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Taskr.Domain;
-using Taskr.Dtos.ApiResponse;
 using Xunit;
 
 namespace Taskr.IntegrationTests
@@ -20,7 +19,7 @@ namespace Taskr.IntegrationTests
         [Fact]
         public async Task Should_return_All_Tasks_with_ok_statusCode()
         {
-            client.SetFakeBearerToken((object) token);
+            await CreateUserAndAuthorizeAsync();
             
             var response = await client.GetAsync("/api/v1/jobs");
 
@@ -34,7 +33,8 @@ namespace Taskr.IntegrationTests
         public async Task GetTaskById_Should_return_NotFound_with_incorrect_id()
         {
             // Arrange
-            client.SetFakeBearerToken((object) token);
+            await CreateUserAndAuthorizeAsync();
+            
             var jobId = Guid.NewGuid();
             
             //Act
@@ -45,13 +45,16 @@ namespace Taskr.IntegrationTests
         }
 
         [Fact]
-        public async Task CreateTask_Should_Return_UnAuthorized_with_Fake_Token()
+        public async Task CreateJob_Should_Return_200()
         {
             // Arrange
-            client.SetFakeBearerToken((object) token);
+            await CreateUserAndAuthorizeAsync();
+            
+            var jobId = Guid.NewGuid();
             
             var job = new Job
             {
+                Id = jobId,
                 Title = "New test job",
                 Description = "Test code for your new job",
                 InitialPrice = 200000
@@ -61,7 +64,7 @@ namespace Taskr.IntegrationTests
             var response = await client.PostAsJsonAsync("api/v1/jobs", job);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
     }

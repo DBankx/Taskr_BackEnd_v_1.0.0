@@ -1,7 +1,6 @@
 ﻿using System;
 using MediatR;
 using Taskr.Domain;
-using Taskr.Dtos.ApiResponse;
 
 namespace Taskr.Commands.Bid
 {
@@ -10,9 +9,9 @@ namespace Taskr.Commands.Bid
     /// </summary>
     public class CreateBidCommand : IRequest
     {
+        public Guid Id { get; set; }
         public Guid JobId { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public BidStatus Status { get; set; }
     }
 }

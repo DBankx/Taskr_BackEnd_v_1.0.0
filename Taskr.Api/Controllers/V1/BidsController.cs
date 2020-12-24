@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Bid;
 using Taskr.Domain;
-using Taskr.Dtos.ApiResponse;
 using Taskr.Infrastructure.ExtensionMethods;
 using Taskr.Queries.Bid;
 

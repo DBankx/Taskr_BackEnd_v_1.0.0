@@ -13,8 +13,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Taskr.Commands\Taskr.Commands.csproj" />
+      <ProjectReference Include="..\Taskr.Infrastructure\Taskr.Infrastructure.csproj" />
+      <ProjectReference Include="..\Taskr.Persistance\Taskr.Persistance.csproj" />
       <ProjectReference Include="..\Taskr.Queries\Taskr.Queries.csproj" />
-      <ProjectReference Include="..\Taskr.RepositoryServices\Taskr.RepositoryServices.csproj" />
     </ItemGroup>
 
 </Project>

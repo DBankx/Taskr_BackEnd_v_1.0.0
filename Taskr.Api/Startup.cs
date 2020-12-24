@@ -24,7 +24,6 @@ using Taskr.Infrastructure.Jwt;
 using Taskr.Infrastructure.Middlewares;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
-using Taskr.RepositoryServices.BidService;
 using Taskr.Validation.Auth;
 
 namespace Taskr.Api
@@ -122,7 +121,6 @@ namespace Taskr.Api
 
             // DI services
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IBidService, BidService>();
             services.AddScoped<IUserAccess, UserAccess>();
 
         }

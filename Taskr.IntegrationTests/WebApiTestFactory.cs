@@ -16,9 +16,6 @@ namespace Taskr.IntegrationTests
 {
     public class WebApiTestFactory : WebApplicationFactory<Startup>
     {
-
-      
-        
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
             return WebHost.CreateDefaultBuilder()
@@ -28,17 +25,17 @@ namespace Taskr.IntegrationTests
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseContentRoot(".");
-            
+
             builder
-                .UseTestServer()
-                .ConfigureTestServices(collection =>
-                {
-                    collection.AddAuthentication(options =>
-                    {
-                        options.DefaultAuthenticateScheme = FakeJwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = FakeJwtBearerDefaults.AuthenticationScheme;
-                    }).AddFakeJwtBearer();
-                });
+                .UseTestServer();
+                // .ConfigureTestServices(collection =>
+                // {
+                //     collection.AddAuthentication(options =>
+                //     {
+                //         options.DefaultAuthenticateScheme = FakeJwtBearerDefaults.AuthenticationScheme;
+                //         options.DefaultChallengeScheme = FakeJwtBearerDefaults.AuthenticationScheme;
+                //     }).AddFakeJwtBearer();
+                // });
             builder.ConfigureServices(services =>
             {
                 var descriptor = services.SingleOrDefault(

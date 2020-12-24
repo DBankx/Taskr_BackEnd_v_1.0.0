@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Taskr.Domain;
-using Taskr.Dtos.ApiResponse;
 using Taskr.Persistance;
 using Taskr.Queries.Bid;
 
