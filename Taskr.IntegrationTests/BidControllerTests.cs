@@ -63,7 +63,7 @@ namespace Taskr.IntegrationTests
         }
 
         [Fact]
-        public async Task GetBidById_Should_Return_Bid_If_Bid_Exists()
+        public async Task CreateBid_Should_Fail_If_Bid_Created_By_Job_Owner()
         {
             // Assert
             await CreateUserAndAuthorizeAsync();
@@ -91,15 +91,11 @@ namespace Taskr.IntegrationTests
                 JobId = jobGuid
             };
 
-            await client.PostAsJsonAsync($"api/v1/bids/{jobGuid}", bid);
-            
             // Act
-            var response = await client.GetAsync($"api/v1/bids/get-bid/{bidId}");
+           var response = await client.PostAsJsonAsync($"api/v1/bids/{jobGuid}", bid);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var apiJobResponse = JsonConvert.DeserializeObject<Bid>(await response.Content.ReadAsStringAsync());
-            apiJobResponse.Id.Should().Be(bidId);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
 }
