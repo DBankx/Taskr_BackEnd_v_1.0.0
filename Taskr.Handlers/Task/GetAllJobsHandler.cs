@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -9,7 +10,7 @@ using Taskr.Queries.Bid;
 
 namespace Taskr.Handlers.Task
 {
-    public class GetAllJobsHandler : IRequestHandler<GetAllJobsQuery, List<Domain.Job>>
+    public class GetAllJobsHandler : IRequestHandler<GetAllJobsQuery, IQueryable<Domain.Job>>
     {
         private readonly DataContext _context;
 
@@ -19,9 +20,9 @@ namespace Taskr.Handlers.Task
         }
         
         
-        public async Task<List<Domain.Job>> Handle(GetAllJobsQuery request, CancellationToken cancellationToken)
+        public async Task<IQueryable<Domain.Job>> Handle(GetAllJobsQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Jobs.ToListAsync(cancellationToken: cancellationToken);
+            return _context.Jobs.AsQueryable();
         }
     }
 }

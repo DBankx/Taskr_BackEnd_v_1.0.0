@@ -24,7 +24,7 @@ namespace Taskr.Handlers.Bid
         
         public async Task<Unit> Handle(DeclineBidCommand request, CancellationToken cancellationToken)
         {
-            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId);
+            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId, cancellationToken: cancellationToken);
 
             if (job == null)
                 throw new RestException(HttpStatusCode.NotFound, new {error = "Job not found"});
@@ -34,14 +34,14 @@ namespace Taskr.Handlers.Bid
                     new {error = "You are unauthorized to complete this action"});
             }
 
-            var bid = await _context.Bids.SingleOrDefaultAsync(x => x.Id == request.BidId);
+            var bid = await _context.Bids.SingleOrDefaultAsync(x => x.Id == request.BidId, cancellationToken: cancellationToken);
 
             if (bid == null)
                 throw new RestException(HttpStatusCode.NotFound, new {error = "Bid not found"});
 
             bid.Status = BidStatus.Rejected;
 
-            var success = await _context.SaveChangesAsync() > 0;
+            var success = await _context.SaveChangesAsync(cancellationToken) > 0;
             if (success) return Unit.Value;
             throw new RestException(HttpStatusCode.InternalServerError,
                 new {error = "An error occurred on the server"});

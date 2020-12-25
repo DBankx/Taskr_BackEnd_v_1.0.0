@@ -23,7 +23,7 @@ namespace Taskr.Handlers.Task
         
         public async Task<Unit> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
         {
-            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.Id);
+            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
             
             if (job == null)
             {
@@ -38,7 +38,7 @@ namespace Taskr.Handlers.Task
             job.Title = request.Title ?? job.Title;
             job.InitialPrice = request.InitialPrice ?? job.InitialPrice;
 
-            var success = await _context.SaveChangesAsync() > 0;
+            var success = await _context.SaveChangesAsync(cancellationToken) > 0;
             if(success) return Unit.Value;
             throw new RestException(HttpStatusCode.InternalServerError, new {error = "Error occurred modifying job"});
         }

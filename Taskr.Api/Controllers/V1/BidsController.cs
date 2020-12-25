@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Bid;
@@ -25,33 +28,34 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost("{jobId}")]
-        public async Task<ActionResult<Unit>> CreateBid(Guid jobId, [FromBody] CreateBidCommand command)
+        public async Task<ActionResult<Unit>> CreateBid(Guid jobId, [FromBody] CreateBidCommand command, CancellationToken cancellationToken)
         {
             command.JobId = jobId;
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command, cancellationToken);
             return result;
         }
 
         [HttpGet("{jobId}")]
-        public async Task<ActionResult<List<Bid>>> GetAllJobBids(Guid jobId)
+        [EnableQuery]
+        public async Task<IQueryable<Bid>> GetAllJobBids(Guid jobId, CancellationToken ct)
         {
             var query = new GetAllJobBidsQuery(jobId);
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query, ct);
             return result;
         }
 
         [HttpGet("get-bid/{bidId}")]
-        public async Task<ActionResult<Bid>> GetBidById(Guid bidId)
+        public async Task<ActionResult<Bid>> GetBidById(Guid bidId, CancellationToken ct)
         {
             var query = new GetBidByIdQuery(bidId);
-            return await _mediator.Send(query);
+            return await _mediator.Send(query, ct);
         }
 
         [HttpPost("decline/{jobId}/{bidId}")]
-        public async Task<ActionResult<Unit>> DeclineBid(Guid jobId, Guid bidId)
+        public async Task<ActionResult<Unit>> DeclineBid(Guid jobId, Guid bidId, CancellationToken ct)
         {
             var command = new DeclineBidCommand(bidId, jobId);
-            return await _mediator.Send(command);
+            return await _mediator.Send(command, ct);
         }
     }
 }

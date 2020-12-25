@@ -34,7 +34,7 @@ namespace Taskr.Handlers.Bid
             if (user == null)
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
             
-            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId);
+            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId, cancellationToken: cancellationToken);
             
             if (job == null)
             { 
@@ -42,7 +42,7 @@ namespace Taskr.Handlers.Bid
             }
             
             // delete any previous bid the user has on the job
-            var prevBid = await _context.Bids.SingleOrDefaultAsync(x => x.User == user && x.Job == job);
+            var prevBid = await _context.Bids.SingleOrDefaultAsync(x => x.User == user && x.Job == job, cancellationToken: cancellationToken);
 
             if (prevBid != null)
             {

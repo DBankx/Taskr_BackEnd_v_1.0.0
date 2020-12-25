@@ -25,7 +25,7 @@ namespace Taskr.Handlers.Task
         public async Task<Unit> Handle(CreateJobCommand request, CancellationToken cancellationToken)
         {
            
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.Id == _userAccess.GetCurrentUserId());
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.Id == _userAccess.GetCurrentUserId(), cancellationToken: cancellationToken);
             if (user == null)
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
 
@@ -40,13 +40,15 @@ namespace Taskr.Handlers.Task
             };
             
             await _context.Jobs.AddAsync(job, cancellationToken);
+            
             var created = await _context.SaveChangesAsync(cancellationToken) > 0;
+            
             if (!created)
             {
                 throw new RestException(HttpStatusCode.InternalServerError,
                     new {error = "Server error occurred"});
             }
-
+            
             return Unit.Value;
         }
     }

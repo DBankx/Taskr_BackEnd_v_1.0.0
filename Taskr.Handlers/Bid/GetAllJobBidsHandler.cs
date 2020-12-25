@@ -10,7 +10,7 @@ using Taskr.Queries.Bid;
 
 namespace Taskr.Handlers.Bid
 {
-    public class GetAllJobBidsHandler : IRequestHandler<GetAllJobBidsQuery, List<Domain.Bid>>
+    public class GetAllJobBidsHandler : IRequestHandler<GetAllJobBidsQuery, IQueryable<Domain.Bid>>
     {
         private readonly DataContext _context;
 
@@ -19,10 +19,10 @@ namespace Taskr.Handlers.Bid
             _context = context;
         }
         
-        public async Task<List<Domain.Bid>> Handle(GetAllJobBidsQuery request, CancellationToken cancellationToken)
+        public async Task<IQueryable<Domain.Bid>> Handle(GetAllJobBidsQuery request, CancellationToken cancellationToken)
         {
             
-            var bids = await _context.Bids.Where(x => x.JobId == request.JobId).ToListAsync(cancellationToken: cancellationToken);
+            var bids = _context.Bids.Where(x => x.JobId == request.JobId).AsQueryable();
 
             return bids;
 

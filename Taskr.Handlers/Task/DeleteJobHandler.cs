@@ -25,7 +25,7 @@ namespace Taskr.Handlers.Task
         public async Task<Unit> Handle(DeleteJobCommand request, CancellationToken cancellationToken)
         {
             var loggedInUserId = _userAccess.GetCurrentUserId();
-            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId);
+            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId, cancellationToken: cancellationToken);
             if (job == null)
             {
                 throw new RestException(HttpStatusCode.NotFound, new {error = "Job not found"});
@@ -37,7 +37,7 @@ namespace Taskr.Handlers.Task
             
             _context.Jobs.Remove(job);
             
-            var deleted = await _context.SaveChangesAsync() > 0;
+            var deleted = await _context.SaveChangesAsync(cancellationToken) > 0;
             if (!deleted)
                 throw new RestException(HttpStatusCode.InternalServerError,
                     new {error = "Server error occurred"});
