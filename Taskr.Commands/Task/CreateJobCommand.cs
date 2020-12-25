@@ -3,9 +3,7 @@ using MediatR;
 
 namespace Taskr.Commands.Task
 {
-    /// <summary>
-    /// TODO - add validation
-    /// </summary>
+    
     public class CreateJobCommand : IRequest
     {
         public Guid Id { get; set; }

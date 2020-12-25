@@ -4,9 +4,7 @@ using Taskr.Domain;
 
 namespace Taskr.Commands.Bid
 {
-    /// <summary>
-    /// TODO - create validation
-    /// </summary>
+    
     public class CreateBidCommand : IRequest
     {
         public Guid Id { get; set; }

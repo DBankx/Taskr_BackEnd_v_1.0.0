@@ -12,9 +12,6 @@ using Taskr.Persistance;
 
 namespace Taskr.Handlers.Bid
 {
-    /// <summary>
-    /// TODO - creator of jobs not allowed to set bids
-    /// </summary>
     public class CreateBidHandler : IRequestHandler<CreateBidCommand>
     {
         private readonly DataContext _context;
@@ -40,6 +37,9 @@ namespace Taskr.Handlers.Bid
             { 
                 throw new RestException(HttpStatusCode.NotFound, new {error = "Job not found"});
             }
+
+            if (job.User == user)
+                throw new RestException(HttpStatusCode.BadRequest, new {bid = "You cannot bid on your own post"});
             
             // delete any previous bid the user has on the job
             var prevBid = await _context.Bids.SingleOrDefaultAsync(x => x.User == user && x.Job == job, cancellationToken: cancellationToken);
