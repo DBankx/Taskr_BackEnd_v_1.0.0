@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Task;
 using Taskr.Domain;
 using Taskr.Dtos.Errors;
+using Taskr.Dtos.Job;
 using Taskr.Infrastructure.ExtensionMethods;
 using Taskr.Queries.Bid;
 
@@ -29,7 +30,7 @@ namespace Taskr.Api.Controllers.V1
 
         [HttpGet]
         [EnableQuery(PageSize = 10)]
-        public async Task<IQueryable<Job>> GetAllJobs(CancellationToken ct)
+        public async Task<IQueryable<AllJobsDto>> GetAllJobs(CancellationToken ct)
         {
             await Task.Delay(1000, cancellationToken: ct);
                 var query = new GetAllJobsQuery();

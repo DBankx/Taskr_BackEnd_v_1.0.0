@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskr.Validation", "Taskr.V
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskr.IntegrationTests", "Taskr.IntegrationTests\Taskr.IntegrationTests.csproj", "{0B64B61C-B026-4BD0-B7DB-E704B574C349}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskr.MappingProfiles", "Taskr.MappingProfiles\Taskr.MappingProfiles.csproj", "{28183903-EABF-4835-A311-C46203AEF541}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{0B64B61C-B026-4BD0-B7DB-E704B574C349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B64B61C-B026-4BD0-B7DB-E704B574C349}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B64B61C-B026-4BD0-B7DB-E704B574C349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28183903-EABF-4835-A311-C46203AEF541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28183903-EABF-4835-A311-C46203AEF541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28183903-EABF-4835-A311-C46203AEF541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28183903-EABF-4835-A311-C46203AEF541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

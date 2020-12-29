@@ -10,10 +10,10 @@ namespace Taskr.Domain
         public string Description { get; set; }
         public Guid JobId { get; set; }
         [ForeignKey(nameof(JobId))]
-        public Job Job { get; set; }
+        public virtual Job Job { get; set; }
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         [Column(TypeName = "decimal(18,2)")] 
         public decimal Price { get; set; }
         public DateTime CreatedAt { get; set; }

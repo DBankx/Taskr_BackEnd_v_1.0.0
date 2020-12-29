@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNet.OData.Extensions;
@@ -18,6 +19,7 @@ using Taskr.Handlers.Task;
 using Taskr.Infrastructure.Jwt;
 using Taskr.Infrastructure.Middlewares;
 using Taskr.Infrastructure.Security;
+using Taskr.MappingProfiles.Job;
 using Taskr.Persistance;
 using Taskr.Validation.Auth;
 
@@ -85,6 +87,9 @@ namespace Taskr.Api
                 });
             });
             
+            // AutoMapper
+            services.AddAutoMapper(typeof(JobProfile).Assembly);
+            
             // OData
             services.AddRouting();
             services.AddOData(); 
@@ -92,6 +97,7 @@ namespace Taskr.Api
             // EntityFramework
             services.AddDbContext<DataContext>(options =>
             {
+                options.UseLazyLoadingProxies();
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnectionString"));
             });
             
