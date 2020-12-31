@@ -12,5 +12,6 @@ namespace Taskr.Domain
         public string City { get; set; }
         public DateTime CreatedAt { get; set; }
         public virtual ICollection<Job> CreatedJobs { get; set; }
+        public string Avatar { get; set; }
     }
 }

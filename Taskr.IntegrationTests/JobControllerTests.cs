@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Taskr.Domain;
+using Taskr.Infrastructure.Pagination;
 using Xunit;
 
 namespace Taskr.IntegrationTests
@@ -25,8 +26,9 @@ namespace Taskr.IntegrationTests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var json = await response.Content.ReadAsStringAsync();
-            var apiResponse = JsonConvert.DeserializeObject<List<Domain.Job>>(json);
-            apiResponse.Count.Should().BeGreaterThan(0);
+            var apiResponse = JsonConvert.DeserializeObject<PagedResponse<List<Domain.Job>>>(json);
+            apiResponse.Data.Count.Should().BeGreaterThan(0);
+            apiResponse.Data.Count.Should().BeLessOrEqualTo(10);
         }
 
         [Fact]

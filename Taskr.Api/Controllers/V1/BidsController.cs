@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Bid;
@@ -36,7 +35,6 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpGet("{jobId}")]
-        [EnableQuery]
         public async Task<IQueryable<Bid>> GetAllJobBids(Guid jobId, CancellationToken ct)
         {
             var query = new GetAllJobBidsQuery(jobId);

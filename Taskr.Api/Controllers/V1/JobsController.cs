@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Task;
@@ -13,7 +12,9 @@ using Taskr.Domain;
 using Taskr.Dtos.Errors;
 using Taskr.Dtos.Job;
 using Taskr.Infrastructure.ExtensionMethods;
+using Taskr.Infrastructure.Pagination;
 using Taskr.Queries.Bid;
+using Taskr.Queries.Task.Filter;
 
 namespace Taskr.Api.Controllers.V1
 {
@@ -29,11 +30,9 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpGet]
-        [EnableQuery(PageSize = 10)]
-        public async Task<IQueryable<AllJobsDto>> GetAllJobs(CancellationToken ct)
+        public async Task<PagedResponse<List<AllJobsDto>>> GetAllJobs([FromQuery] PaginationFilter filter, [FromQuery] GetAllJobsFilter jobsFilter, CancellationToken ct)
         {
-            await Task.Delay(1000, cancellationToken: ct);
-                var query = new GetAllJobsQuery();
+            var query = new GetAllJobsQuery {PaginationFilter = filter, Route = Request.Path.Value, JobFilters = jobsFilter};
                 var result = await _mediator.Send(query, ct);
                 return result;
             }

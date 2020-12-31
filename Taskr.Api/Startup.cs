@@ -3,10 +3,10 @@ using System.Text;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +18,7 @@ using Taskr.Domain;
 using Taskr.Handlers.Task;
 using Taskr.Infrastructure.Jwt;
 using Taskr.Infrastructure.Middlewares;
+using Taskr.Infrastructure.Pagination;
 using Taskr.Infrastructure.Security;
 using Taskr.MappingProfiles.Job;
 using Taskr.Persistance;
@@ -90,10 +91,6 @@ namespace Taskr.Api
             // AutoMapper
             services.AddAutoMapper(typeof(JobProfile).Assembly);
             
-            // OData
-            services.AddRouting();
-            services.AddOData(); 
-            
             // EntityFramework
             services.AddDbContext<DataContext>(options =>
             {
@@ -127,7 +124,13 @@ namespace Taskr.Api
             // DI services
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccess, UserAccess>();
-
+             services.AddSingleton<IUriService>(opt =>
+             { 
+                 var accessor = opt.GetRequiredService<IHttpContextAccessor>();
+                 var request = accessor.HttpContext.Request;
+                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                 return new UriService(uri);
+             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -153,8 +156,6 @@ namespace Taskr.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.EnableDependencyInjection();
-                endpoints.Filter().Select().Expand().OrderBy().Count().MaxTop(null);
                 endpoints.MapControllers();
             });
         }
