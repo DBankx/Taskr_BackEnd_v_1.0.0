@@ -48,7 +48,8 @@ namespace Taskr.Handlers.Auth
             var authUserResponse = new AuthUserResponse
             {
                 Email = user.Email,
-                Username = user.UserName
+                Username = user.UserName,
+                Avatar = user.Avatar
             };
 
             return new AuthResponse
