@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskr.Persistance;
 
 namespace Taskr.Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210101192735_AddedPropertiesToJobModel")]
+    partial class AddedPropertiesToJobModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,24 +320,6 @@ namespace Taskr.Persistance.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Taskr.Domain.Photo", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("JobId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("Photos");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -413,21 +397,9 @@ namespace Taskr.Persistance.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Taskr.Domain.Photo", b =>
-                {
-                    b.HasOne("Taskr.Domain.Job", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("JobId");
-                });
-
             modelBuilder.Entity("Taskr.Domain.ApplicationUser", b =>
                 {
                     b.Navigation("CreatedJobs");
-                });
-
-            modelBuilder.Entity("Taskr.Domain.Job", b =>
-                {
-                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

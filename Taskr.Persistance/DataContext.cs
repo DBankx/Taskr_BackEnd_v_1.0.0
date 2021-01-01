@@ -14,6 +14,7 @@ namespace Taskr.Persistance
 
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Bid> Bids { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

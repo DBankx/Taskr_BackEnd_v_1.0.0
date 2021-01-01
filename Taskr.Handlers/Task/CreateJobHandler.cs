@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Taskr.Commands.Task;
 using Taskr.Domain;
 using Taskr.Dtos.Errors;
+using Taskr.Infrastructure.PhotoService;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
 
@@ -15,20 +18,28 @@ namespace Taskr.Handlers.Task
     {
         private readonly DataContext _context;
         private readonly IUserAccess _userAccess;
+        private readonly IPhotoService _photoService;
 
-        public CreateJobHandler(DataContext context, IUserAccess userAccess)
+        public CreateJobHandler(DataContext context, IUserAccess userAccess, IPhotoService photoService)
         {
             _context = context;
             _userAccess = userAccess;
+            _photoService = photoService;
         }
         
         public async Task<Unit> Handle(CreateJobCommand request, CancellationToken cancellationToken)
         {
            
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Id == _userAccess.GetCurrentUserId(), cancellationToken: cancellationToken);
+            
             if (user == null)
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
-
+            
+            if (request.ImageFiles.Count > 3)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new {photos = "Only 3 images per job is allowed"});
+            }
+            
             var job = new Job
             {
                 Id = request.Id,
@@ -36,8 +47,26 @@ namespace Taskr.Handlers.Task
                 Description = request.Description,
                 InitialPrice = request.InitialPrice,
                 User = user,
-                UserId = user.Id
+                UserId = user.Id,
+                PostCode = request.PostCode,
+                City = request.City,
+                CreatedAt = DateTime.Now,
+                EndDate = request.EndDate
             };
+            
+            var photoUploadResults = await _photoService.UploadPhoto(request.ImageFiles);
+            var jobImages = new List<Photo>();
+            
+            foreach (var photoUpload in photoUploadResults)
+            {
+                jobImages.Add(new Photo
+                {
+                    Id = photoUpload.PublicId,
+                    Url = photoUpload.Url
+                });
+            }
+
+            job.Photos = jobImages;
             
             await _context.Jobs.AddAsync(job, cancellationToken);
             

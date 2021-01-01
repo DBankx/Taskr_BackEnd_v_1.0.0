@@ -6,16 +6,16 @@ namespace Taskr.Infrastructure.Security
 {
     public class UserAccess : IUserAccess
     {
-        private readonly IHttpContextAccessor _httpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserAccess(IHttpContextAccessor httpContext)
+        public UserAccess(IHttpContextAccessor httpContextAccessor)
         {
-            _httpContext = httpContext;
+            _httpContextAccessor = httpContextAccessor;
         }
         
         public string GetCurrentUserId()
         {
-            return _httpContext.HttpContext.User?.Claims.Single(x => x.Type == "id")?.Value;
+            return _httpContextAccessor.HttpContext?.User?.Claims?.Single(x => x.Type == "id")?.Value;
         }
     }
 }

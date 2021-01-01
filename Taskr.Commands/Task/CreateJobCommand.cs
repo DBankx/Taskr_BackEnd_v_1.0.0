@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Taskr.Commands.Task
 {
@@ -11,5 +13,11 @@ namespace Taskr.Commands.Task
         public string Description { get; set; }
         public decimal InitialPrice { get; set; }
         public string UserId { get; set; }
+        public List<IFormFile> ImageFiles { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime EndDate { get; set; }
+        public string City { get; set; }
+        public string PostCode { get; set; }
+        public int Views { get; set; }
     }
 }

@@ -19,6 +19,7 @@ using Taskr.Handlers.Task;
 using Taskr.Infrastructure.Jwt;
 using Taskr.Infrastructure.Middlewares;
 using Taskr.Infrastructure.Pagination;
+using Taskr.Infrastructure.PhotoService;
 using Taskr.Infrastructure.Security;
 using Taskr.MappingProfiles.Job;
 using Taskr.Persistance;
@@ -42,7 +43,8 @@ namespace Taskr.Api
             var jwtSettings = new JwtSettings(); 
             Configuration.Bind(nameof(JwtSettings), jwtSettings); 
             services.AddSingleton(jwtSettings);
-                        
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+            
             services.AddControllers().AddFluentValidation(options =>
             {
                 options.RegisterValidatorsFromAssemblyContaining<SignUpValidator>();
@@ -131,6 +133,7 @@ namespace Taskr.Api
                  var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
                  return new UriService(uri);
              });
+             services.AddScoped<IPhotoService, PhotoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

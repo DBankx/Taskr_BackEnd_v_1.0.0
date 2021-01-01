@@ -55,7 +55,7 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost]
-        public async Task<ActionResult<Unit>> CreateJob([FromBody] CreateJobCommand command, CancellationToken ct)
+        public async Task<ActionResult<Unit>> CreateJob([FromForm] CreateJobCommand command, CancellationToken ct)
         {
             return await _mediator.Send(command, ct);
         }
