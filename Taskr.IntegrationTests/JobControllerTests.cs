@@ -46,28 +46,28 @@ namespace Taskr.IntegrationTests
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        [Fact]
-        public async Task CreateJob_Should_Return_200()
-        {
-            // Arrange
-            await CreateUserAndAuthorizeAsync();
-            
-            var jobId = Guid.NewGuid();
-            
-            var job = new Job
-            {
-                Id = jobId,
-                Title = "New test job",
-                Description = "Test code for your new job",
-                InitialPrice = 200000
-            };
-            
-            // Act
-            var response = await client.PostAsJsonAsync("api/v1/jobs", job);
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
+        // [Fact]
+        // public async Task CreateJob_Should_Return_200()
+        // {
+        //     // Arrange
+        //     await CreateUserAndAuthorizeAsync();
+        //     
+        //     var jobId = Guid.NewGuid();
+        //     
+        //     var job = new Job
+        //     {
+        //         Id = jobId,
+        //         Title = "New test job",
+        //         Description = "Test code for your new job",
+        //         InitialPrice = 200000
+        //     };
+        //     
+        //     // Act
+        //     var response = await client.PostAsJsonAsync("api/v1/jobs", job);
+        //
+        //     // Assert
+        //     response.StatusCode.Should().Be(HttpStatusCode.OK);
+        // }
 
     }
 }

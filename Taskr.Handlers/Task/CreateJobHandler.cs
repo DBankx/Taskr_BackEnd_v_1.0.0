@@ -51,7 +51,7 @@ namespace Taskr.Handlers.Task
                 PostCode = request.PostCode,
                 City = request.City,
                 CreatedAt = DateTime.Now,
-                EndDate = request.EndDate
+                DeliveryDate = request.EndDate
             };
             
             var photoUploadResults = await _photoService.UploadPhoto(request.ImageFiles);

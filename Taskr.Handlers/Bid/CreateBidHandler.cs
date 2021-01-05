@@ -60,6 +60,7 @@ namespace Taskr.Handlers.Bid
                 Status = BidStatus.Submitted,
                 CreatedAt = DateTime.Now,
                 JobId = request.JobId,
+                Job = job,
                 Description = request.Description,
                 Price = request.Price,
                 UserId = user.Id,

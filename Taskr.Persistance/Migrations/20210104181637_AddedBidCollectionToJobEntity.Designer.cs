@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskr.Persistance;
 
 namespace Taskr.Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210104181637_AddedBidCollectionToJobEntity")]
+    partial class AddedBidCollectionToJobEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,30 +338,6 @@ namespace Taskr.Persistance.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("Taskr.Domain.Watch", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("JobId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("WatchedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Watches");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -444,26 +422,9 @@ namespace Taskr.Persistance.Migrations
                         .HasForeignKey("JobId");
                 });
 
-            modelBuilder.Entity("Taskr.Domain.Watch", b =>
-                {
-                    b.HasOne("Taskr.Domain.Job", "Job")
-                        .WithMany("Watching")
-                        .HasForeignKey("JobId");
-
-                    b.HasOne("Taskr.Domain.ApplicationUser", "User")
-                        .WithMany("Watching")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Job");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Taskr.Domain.ApplicationUser", b =>
                 {
                     b.Navigation("CreatedJobs");
-
-                    b.Navigation("Watching");
                 });
 
             modelBuilder.Entity("Taskr.Domain.Job", b =>
@@ -471,8 +432,6 @@ namespace Taskr.Persistance.Migrations
                     b.Navigation("Bids");
 
                     b.Navigation("Photos");
-
-                    b.Navigation("Watching");
                 });
 #pragma warning restore 612, 618
         }

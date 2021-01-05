@@ -13,5 +13,6 @@ namespace Taskr.Domain
         public DateTime CreatedAt { get; set; }
         public virtual ICollection<Job> CreatedJobs { get; set; }
         public string Avatar { get; set; }
+        public virtual ICollection<Watch> Watching { get; set; }
     }
 }

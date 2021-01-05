@@ -11,7 +11,9 @@ namespace Taskr.MappingProfiles.Job
         {
             CreateMap<Domain.Job, AllJobsDto>().ForMember(x => x.CreatorId, opt => opt.MapFrom(x => x.User.Id))
                 .ForMember(x => x.CreatorUsername, opt => opt.MapFrom(x => x.User.UserName));
+
             CreateMap<ApplicationUser, JobCreatorDto>();
+            CreateMap<Domain.Job, JobDto>().ForMember(x => x.Creator, opt => opt.MapFrom(src => src.User)).ForMember(x => x.BidsCount, opt => opt.MapFrom<BidCountResolver>()).ForMember(x => x.WatchCount, opt => opt.MapFrom<WatchCountResolver>());
         }
     }
 }

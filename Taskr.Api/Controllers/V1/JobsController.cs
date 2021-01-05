@@ -38,7 +38,7 @@ namespace Taskr.Api.Controllers.V1
             }
 
         [HttpGet("{jobId}")]
-        public async Task<ActionResult<Job>> GetJobsById(Guid jobId, CancellationToken ct)
+        public async Task<ActionResult<JobDto>> GetJobsById(Guid jobId, CancellationToken ct)
         {
        
                 var query = new GetJobByIdQuery(jobId);
@@ -67,6 +67,12 @@ namespace Taskr.Api.Controllers.V1
             var result = await _mediator.Send(command, ct);
             return result;
         }
-        
+
+        [HttpPost("watch/{jobId}")]
+        public async Task<ActionResult<Unit>> WatchTask(Guid jobId)
+        {
+            var watchJobCommand = new WatchJobCommand {JobId = jobId};
+            return await _mediator.Send(watchJobCommand);
+        }
     }
 }
