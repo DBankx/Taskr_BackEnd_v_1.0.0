@@ -38,7 +38,7 @@ namespace Taskr.Api.Controllers.V1
             }
 
         [HttpGet("{jobId}")]
-        public async Task<ActionResult<JobDto>> GetJobsById(Guid jobId, CancellationToken ct)
+        public async Task<ActionResult<JobDto>> GetJobById(Guid jobId, CancellationToken ct)
         {
        
                 var query = new GetJobByIdQuery(jobId);

@@ -2,28 +2,32 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Taskr.Commands.Bid;
 using Taskr.Domain;
+using Taskr.Dtos;
 using Taskr.Dtos.Errors;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
 
 namespace Taskr.Handlers.Bid
 {
-    public class CreateBidHandler : IRequestHandler<CreateBidCommand>
+    public class CreateBidHandler : IRequestHandler<CreateBidCommand, BidDto>
     {
         private readonly DataContext _context;
         private readonly IUserAccess _userAccess;
+        private readonly IMapper _mapper;
 
-        public CreateBidHandler(DataContext context, IUserAccess userAccess)
+        public CreateBidHandler(DataContext context, IUserAccess userAccess, IMapper mapper)
         {
             _context = context;
             _userAccess = userAccess;
+            _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateBidCommand request, CancellationToken cancellationToken)
+        public async Task<BidDto> Handle(CreateBidCommand request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Id == _userAccess.GetCurrentUserId(),
                 cancellationToken: cancellationToken);
@@ -76,7 +80,7 @@ namespace Taskr.Handlers.Bid
                 throw new Exception("Error occurred while creating bid");
             }
 
-            return Unit.Value;
+            return _mapper.Map<BidDto>(bid);
         }
     }
 }

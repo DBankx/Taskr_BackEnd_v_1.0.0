@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Bid;
 using Taskr.Domain;
+using Taskr.Dtos;
 using Taskr.Infrastructure.ExtensionMethods;
 using Taskr.Queries.Bid;
 
@@ -27,7 +28,7 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost("{jobId}")]
-        public async Task<ActionResult<Unit>> CreateBid(Guid jobId, [FromBody] CreateBidCommand command, CancellationToken cancellationToken)
+        public async Task<ActionResult<BidDto>> CreateBid(Guid jobId, [FromBody] CreateBidCommand command, CancellationToken cancellationToken)
         {
             command.JobId = jobId;
             var result = await _mediator.Send(command, cancellationToken);

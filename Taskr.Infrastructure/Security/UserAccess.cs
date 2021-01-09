@@ -15,7 +15,7 @@ namespace Taskr.Infrastructure.Security
         
         public string GetCurrentUserId()
         {
-            return _httpContextAccessor.HttpContext?.User?.Claims?.Single(x => x.Type == "id")?.Value;
+            return _httpContextAccessor.HttpContext?.User?.Claims?.SingleOrDefault(x => x.Type == "id")?.Value;
         }
     }
 }
