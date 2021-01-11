@@ -13,9 +13,10 @@ namespace Taskr.Dtos.Job
         public decimal InitialPrice { get; set; }
         public ICollection<Domain.Photo> Photos { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime DeliveryDate { get; set; }
         public string City { get; set; }
         public string PostCode { get; set; }
         public JobCreatorDto Creator { get; set; }
+        public bool IsWatching { get; set; }
     }
 }

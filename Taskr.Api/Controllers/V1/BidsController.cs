@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Taskr.Commands.Bid;
 using Taskr.Domain;
 using Taskr.Dtos;
+using Taskr.Dtos.Bid;
 using Taskr.Infrastructure.ExtensionMethods;
 using Taskr.Queries.Bid;
 
@@ -36,7 +37,8 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpGet("{jobId}")]
-        public async Task<IQueryable<Bid>> GetAllJobBids(Guid jobId, CancellationToken ct)
+        [AllowAnonymous]
+        public async Task<List<TaskBidDto>> GetAllJobBids(Guid jobId, CancellationToken ct)
         {
             var query = new GetAllJobBidsQuery(jobId);
             var result = await _mediator.Send(query, ct);
@@ -44,6 +46,7 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpGet("get-bid/{bidId}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Bid>> GetBidById(Guid bidId, CancellationToken ct)
         {
             var query = new GetBidByIdQuery(bidId);

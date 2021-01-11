@@ -18,6 +18,7 @@ using Taskr.Queries.Task.Filter;
 
 namespace Taskr.Api.Controllers.V1
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class JobsController : ControllerBase
@@ -29,6 +30,7 @@ namespace Taskr.Api.Controllers.V1
             _mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<PagedResponse<List<AllJobsDto>>> GetAllJobs([FromQuery] PaginationFilter filter, [FromQuery] GetAllJobsFilter jobsFilter, CancellationToken ct)
         {
@@ -37,6 +39,7 @@ namespace Taskr.Api.Controllers.V1
                 return result;
             }
 
+        [AllowAnonymous]
         [HttpGet("{jobId}")]
         public async Task<ActionResult<JobDto>> GetJobById(Guid jobId, CancellationToken ct)
         {
@@ -53,7 +56,7 @@ namespace Taskr.Api.Controllers.V1
             var result = await _mediator.Send(command, ct);
             return result;
         }
-
+        
         [HttpPost]
         public async Task<ActionResult<Unit>> CreateJob([FromForm] CreateJobCommand command, CancellationToken ct)
         {
@@ -73,6 +76,13 @@ namespace Taskr.Api.Controllers.V1
         {
             var watchJobCommand = new WatchJobCommand {JobId = jobId};
             return await _mediator.Send(watchJobCommand);
+        }
+
+        [HttpDelete("watch/{jobId}")]
+        public async Task<ActionResult<Unit>> UnWatchTask(Guid jobId)
+        {
+            var unWatchJobCommand = new UnWatchTaskCommand {JobId = jobId};
+            return await _mediator.Send(unWatchJobCommand);
         }
     }
 }

@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Taskr.Domain;
 using Taskr.Handlers.Task;
+using Taskr.Infrastructure.Helpers;
 using Taskr.Infrastructure.Jwt;
 using Taskr.Infrastructure.Middlewares;
 using Taskr.Infrastructure.Pagination;
@@ -134,6 +135,7 @@ namespace Taskr.Api
                  return new UriService(uri);
              });
              services.AddScoped<IPhotoService, PhotoService>();
+             services.AddScoped<IQueryProcessor, EfQueryProcessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

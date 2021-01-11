@@ -37,7 +37,19 @@ namespace Taskr.Handlers.Task
 
             if (job == null) throw new RestException(HttpStatusCode.NotFound, new {job = "Not found"});
 
-            var watchData = new Watch
+            if (job.UserId == user.Id)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new {watch = "You cannot watch your own task"});
+            }
+
+            var watchData = await _context.Watches.SingleOrDefaultAsync(x => x.Job == job && x.User == user);
+
+            if (watchData != null)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new {watch = "you are already watching this task"});
+            }
+            
+            watchData =  new Watch
             {
                 User = user,
                 Job = job,
