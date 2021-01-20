@@ -5,9 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Taskr.Commands.Task;
 using Taskr.Domain;
 using Taskr.Dtos.Errors;
+using Taskr.Infrastructure.Helpers;
 using Taskr.Infrastructure.PhotoService;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
@@ -19,12 +21,14 @@ namespace Taskr.Handlers.Task
         private readonly DataContext _context;
         private readonly IUserAccess _userAccess;
         private readonly IPhotoService _photoService;
+        private readonly ILogger<CreateJobHandler> _logger;
 
-        public CreateJobHandler(DataContext context, IUserAccess userAccess, IPhotoService photoService)
+        public CreateJobHandler(DataContext context, IUserAccess userAccess, IPhotoService photoService, ILogger<CreateJobHandler> logger)
         {
             _context = context;
             _userAccess = userAccess;
             _photoService = photoService;
+            _logger = logger;
         }
         
         public async Task<Unit> Handle(CreateJobCommand request, CancellationToken cancellationToken)
@@ -39,7 +43,7 @@ namespace Taskr.Handlers.Task
             {
                 throw new RestException(HttpStatusCode.BadRequest, new {photos = "Only 3 images per job is allowed"});
             }
-            
+
             var job = new Job
             {
                 Id = request.Id,
@@ -49,9 +53,11 @@ namespace Taskr.Handlers.Task
                 User = user,
                 UserId = user.Id,
                 PostCode = request.PostCode,
-                City = request.City,
+                Address = request.Address,
                 CreatedAt = DateTime.Now,
-                DeliveryDate = request.EndDate
+                DeliveryDate = request.EndDate,
+                Category = request.Category, 
+                DeliveryType = request.DeliveryType 
             };
             
             var photoUploadResults = await _photoService.UploadPhoto(request.ImageFiles);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Taskr.Domain;
 
 namespace Taskr.Commands.Task
 {
@@ -16,8 +17,10 @@ namespace Taskr.Commands.Task
         public List<IFormFile> ImageFiles { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime EndDate { get; set; }
-        public string City { get; set; }
+        public string Address { get; set; }
         public string PostCode { get; set; }
         public int Views { get; set; }
+        public Category Category { get; set; }
+        public DeliveryTypes DeliveryType { get; set; }
     }
 }

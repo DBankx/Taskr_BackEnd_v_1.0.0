@@ -19,8 +19,28 @@ namespace Taskr.Domain
         public DateTime DeliveryDate { get; set; }
         public virtual ICollection<Bid> Bids { get; set; }
         public virtual ICollection<Watch> Watching { get; set; }
-        public string City { get; set; }
+        
+        public string Address{ get; set; }
+        public DeliveryTypes DeliveryType { get; set; }
         public string PostCode { get; set; }
         public int Views { get; set; }
+        public Category Category { get; set; }
+    }
+
+    public enum Category
+    {
+        Cleaning,
+        Catering,
+        Laundry,
+        Groceries,
+        Digital,
+        Errands,
+        Delivery
+    }
+
+    public enum DeliveryTypes
+    {
+        InPerson,
+        Online
     }
 }

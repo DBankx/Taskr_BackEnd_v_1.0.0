@@ -14,9 +14,11 @@ namespace Taskr.Dtos.Job
         public JobCreatorDto Creator { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime DeliveryDate { get; set; }
-        public string City { get; set; }
+        public string Address { get; set; }
         public string PostCode { get; set; }
         public int Views { get; set; }
+        public DeliveryTypes DeliveryType { get; set; }
+        public Category Category { get; set; }
         public int BidsCount { get; set; }
         public int WatchCount { get; set; }
         public bool IsBidActive { get; set; }
