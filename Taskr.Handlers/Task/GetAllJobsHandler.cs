@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Taskr.Domain;
 using Taskr.Dtos.Errors;
 using Taskr.Dtos.Job;
+using Taskr.Infrastructure.Helpers;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Persistance;
 using Taskr.Queries.Bid;
@@ -17,29 +18,34 @@ using Taskr.Queries.Filter;
 
 namespace Taskr.Handlers.Task
 {
-    public class GetAllJobsHandler : IRequestHandler<GetAllJobsQuery, PagedResponse<List<AllJobsDto>>>
+    public class GetAllJobsHandler : IRequestHandler<GetAllJobsQuery, PagedResponse<List<JobsListDto>>>
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IUriService _uriService;
+        private readonly IQueryProcessor _queryProcessor;
 
-        public GetAllJobsHandler(DataContext context, IMapper mapper, IUriService uriService)
+        public GetAllJobsHandler(DataContext context, IMapper mapper, IUriService uriService, IQueryProcessor queryProcessor)
         {
             _context = context;
             _mapper = mapper;
             _uriService = uriService;
+            _queryProcessor = queryProcessor;
         }
         
         
-        public async Task<PagedResponse<List<AllJobsDto>>> Handle(GetAllJobsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<List<JobsListDto>>> Handle(GetAllJobsQuery request, CancellationToken cancellationToken)
         {
             if (request.JobFilters != null && !request.JobFilters.ValidPriceRange)
             {
                 throw new RestException(HttpStatusCode.BadRequest,
                     new {error = "Max price cannot be less than min price"});
             }
-            
-            var queryable = _context.Jobs.AsQueryable();
+
+            var queryable = _queryProcessor.Query<Job>()
+                .Include(x => x.User)
+                .Include(x => x.Photos)
+                .Include(x => x.Watching).AsQueryable();
             
 
             queryable = AddFilterToQueries.FilterJobs(request.JobFilters, queryable);
@@ -48,7 +54,7 @@ namespace Taskr.Handlers.Task
             var validFilter = new PaginationFilter(request.PaginationFilter.PageNumber, request.PaginationFilter.PageSize);
             var pagedData = await queryable.Skip((validFilter.PageNumber - 1) * validFilter.PageSize).Take(validFilter.PageSize).ToListAsync(cancellationToken: cancellationToken);
             var totalRecords = await queryable.CountAsync(cancellationToken: cancellationToken);
-            var pagedResponse = PaginationHelper.CreatePagedReponse<AllJobsDto>(_mapper.Map<List<AllJobsDto>>(pagedData), validFilter,
+            var pagedResponse = PaginationHelper.CreatePagedReponse<JobsListDto>(_mapper.Map<List<JobsListDto>>(pagedData), validFilter,
                 totalRecords, _uriService, request.Route);
             return pagedResponse;
         }

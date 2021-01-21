@@ -97,8 +97,7 @@ namespace Taskr.Api
             // EntityFramework
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseLazyLoadingProxies();
-                options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnectionString"));
+                options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnectionString"), o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
             });
             
             // Adding identity Options

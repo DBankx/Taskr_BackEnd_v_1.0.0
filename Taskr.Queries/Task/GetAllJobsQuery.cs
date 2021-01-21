@@ -8,7 +8,7 @@ using Taskr.Queries.Task.Filter;
 
 namespace Taskr.Queries.Bid
 {
-    public class GetAllJobsQuery : IRequest<PagedResponse<List<AllJobsDto>>>
+    public class GetAllJobsQuery : IRequest<PagedResponse<List<JobsListDto>>>
     {
         public PaginationFilter PaginationFilter { get; set; }
         public string Route { get; set; }

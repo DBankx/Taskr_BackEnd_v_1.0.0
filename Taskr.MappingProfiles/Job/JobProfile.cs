@@ -9,7 +9,7 @@ namespace Taskr.MappingProfiles.Job
     {
         public JobProfile()
         {
-            CreateMap<Domain.Job, AllJobsDto>()
+            CreateMap<Domain.Job, JobsListDto>()
                 .ForMember(x => x.Creator, opt => opt.MapFrom(x => x.User)).ForMember(x => x.IsWatching, opt => opt.MapFrom<IsWatchingResolverAllJobs>());
 
             CreateMap<ApplicationUser, JobCreatorDto>();

@@ -6,7 +6,7 @@ using Taskr.Domain;
 
 namespace Taskr.Dtos.Job
 {
-    public class AllJobsDto
+    public class JobsListDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

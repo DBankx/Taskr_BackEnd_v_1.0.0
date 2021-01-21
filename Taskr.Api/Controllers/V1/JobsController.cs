@@ -32,7 +32,7 @@ namespace Taskr.Api.Controllers.V1
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<PagedResponse<List<AllJobsDto>>> GetAllJobs([FromQuery] PaginationFilter filter, [FromQuery] GetAllJobsFilter jobsFilter, CancellationToken ct)
+        public async Task<PagedResponse<List<JobsListDto>>> GetAllJobs([FromQuery] PaginationFilter filter, [FromQuery] GetAllJobsFilter jobsFilter, CancellationToken ct)
         {
             var query = new GetAllJobsQuery {PaginationFilter = filter, Route = Request.Path.Value, JobFilters = jobsFilter};
                 var result = await _mediator.Send(query, ct);

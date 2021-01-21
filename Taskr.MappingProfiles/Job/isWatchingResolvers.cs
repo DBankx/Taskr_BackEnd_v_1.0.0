@@ -6,7 +6,7 @@ using Taskr.Persistance;
 
 namespace Taskr.MappingProfiles.Job
 {
-    public class IsWatchingResolverAllJobs : IValueResolver<Domain.Job, AllJobsDto, bool>
+    public class IsWatchingResolverAllJobs : IValueResolver<Domain.Job, JobsListDto, bool>
     {
         private readonly DataContext _context;
         private readonly IUserAccess _userAccess;
@@ -17,7 +17,7 @@ namespace Taskr.MappingProfiles.Job
             _userAccess = userAccess;
         }
         
-        public bool Resolve(Domain.Job source, AllJobsDto destination, bool destMember, ResolutionContext context)
+        public bool Resolve(Domain.Job source, JobsListDto destination, bool destMember, ResolutionContext context)
         {
             var user = _context.Users.SingleOrDefaultAsync(x => x.Id == _userAccess.GetCurrentUserId()).Result;
 

@@ -17,17 +17,22 @@ namespace Taskr.Handlers.Bid
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IQueryProcessor _queryProcessor;
 
-        public GetAllJobBidsHandler(DataContext context, IMapper mapper)
+        public GetAllJobBidsHandler(DataContext context, IMapper mapper, IQueryProcessor queryProcessor)
         {
             _context = context;
             _mapper = mapper;
+            _queryProcessor = queryProcessor;
         }
         
         public async Task<List<TaskBidDto>> Handle(GetAllJobBidsQuery request, CancellationToken cancellationToken)
         {
 
-            var bids = await _context.Bids.Where(x => x.JobId == request.JobId).ToListAsync(cancellationToken: cancellationToken); 
+            var bids = await _queryProcessor.Query<Domain.Bid>()
+                .Include(x => x.Job)
+                .Include(x => x.User)
+                .Where(x => x.JobId == request.JobId).ToListAsync(cancellationToken: cancellationToken); 
 
             return _mapper.Map<List<TaskBidDto>>(bids);
         }

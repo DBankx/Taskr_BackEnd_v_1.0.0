@@ -25,6 +25,7 @@ namespace Taskr.Domain
         public string PostCode { get; set; }
         public int Views { get; set; }
         public Category Category { get; set; }
+        public JobStatus JobStatus { get; set; }
     }
 
     public enum Category
@@ -42,5 +43,11 @@ namespace Taskr.Domain
     {
         InPerson,
         Online
+    }
+
+    public enum JobStatus
+    {
+        Active,
+        InActive
     }
 }
