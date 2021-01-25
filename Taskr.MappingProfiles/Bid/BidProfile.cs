@@ -4,7 +4,7 @@ using Taskr.Dtos.Bid;
 
 namespace Taskr.MappingProfiles.Bid
 {
-    public class BidProfile : Profile
+    public class BidProfile : AutoMapper.Profile
     {
         public BidProfile()
         {

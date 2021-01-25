@@ -48,6 +48,8 @@ namespace Taskr.Domain
     public enum JobStatus
     {
         Active,
+        Assigned,
+        Completed,
         InActive
     }
 }

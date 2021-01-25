@@ -5,7 +5,7 @@ using Taskr.Dtos.Job;
 
 namespace Taskr.MappingProfiles.Job
 {
-    public class JobProfile : Profile
+    public class JobProfile : AutoMapper.Profile
     {
         public JobProfile()
         {
