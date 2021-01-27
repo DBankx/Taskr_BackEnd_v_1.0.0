@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Taskr.Domain;
 using Taskr.Dtos.Job;
 
 namespace Taskr.Dtos.Profile
@@ -14,5 +15,9 @@ namespace Taskr.Dtos.Profile
         public DateTime CreatedAt { get; set; }
         public string Avatar { get; set; }
         public string Username { get; set; }
+        public ICollection<Skill> SkillSet { get; set; }
+        public ICollection<Language> Languages { get; set; }
+        public Socials Socials { get; set; }
+        public string Tagline { get; set; }
     }
 }

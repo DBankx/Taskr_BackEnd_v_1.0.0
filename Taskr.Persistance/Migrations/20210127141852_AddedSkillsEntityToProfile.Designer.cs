@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskr.Persistance;
 
 namespace Taskr.Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210127141852_AddedSkillsEntityToProfile")]
+    partial class AddedSkillsEntityToProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,7 +183,13 @@ namespace Taskr.Persistance.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Facebook")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instagram")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -210,10 +218,16 @@ namespace Taskr.Persistance.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Pinterest")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tagline")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Twitter")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -428,31 +442,6 @@ namespace Taskr.Persistance.Migrations
 
             modelBuilder.Entity("Taskr.Domain.ApplicationUser", b =>
                 {
-                    b.OwnsOne("Taskr.Domain.Socials", "Socials", b1 =>
-                        {
-                            b1.Property<string>("ApplicationUserId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<string>("Facebook")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Instagram")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Pinterest")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Twitter")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("ApplicationUserId");
-
-                            b1.ToTable("AspNetUsers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ApplicationUserId");
-                        });
-
                     b.OwnsMany("Taskr.Domain.Language", "Languages", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -460,7 +449,7 @@ namespace Taskr.Persistance.Migrations
                                 .HasColumnType("int")
                                 .UseIdentityColumn();
 
-                            b1.Property<int>("ExperienceLevel")
+                            b1.Property<int>("LanguageExperienceLevel")
                                 .HasColumnType("int");
 
                             b1.Property<string>("LanguageName")
@@ -487,12 +476,12 @@ namespace Taskr.Persistance.Migrations
                                 .HasColumnType("int")
                                 .UseIdentityColumn();
 
-                            b1.Property<int>("ExperienceLevel")
-                                .HasColumnType("int");
-
                             b1.Property<string>("OwnerId")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("SkillExperience")
+                                .HasColumnType("int");
 
                             b1.Property<string>("SkillName")
                                 .HasColumnType("nvarchar(max)");
@@ -510,8 +499,6 @@ namespace Taskr.Persistance.Migrations
                     b.Navigation("Languages");
 
                     b.Navigation("SkillSet");
-
-                    b.Navigation("Socials");
                 });
 
             modelBuilder.Entity("Taskr.Domain.Bid", b =>

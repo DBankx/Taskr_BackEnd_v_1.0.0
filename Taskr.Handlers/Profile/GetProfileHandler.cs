@@ -53,7 +53,11 @@ namespace Taskr.Handlers.Profile
                 CreatedAt = user.CreatedAt,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Username = user.UserName
+                Username = user.UserName,
+                SkillSet = user.SkillSet,
+                Languages = user.Languages,
+                Socials = user.Socials,
+                Tagline = user.Tagline
             };
 
             return profile;

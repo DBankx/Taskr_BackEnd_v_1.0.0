@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskr.Persistance;
 
 namespace Taskr.Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210127144317_AddedSocialsEntityToProfile")]
+    partial class AddedSocialsEntityToProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -460,7 +462,7 @@ namespace Taskr.Persistance.Migrations
                                 .HasColumnType("int")
                                 .UseIdentityColumn();
 
-                            b1.Property<int>("ExperienceLevel")
+                            b1.Property<int>("LanguageExperienceLevel")
                                 .HasColumnType("int");
 
                             b1.Property<string>("LanguageName")
@@ -487,12 +489,12 @@ namespace Taskr.Persistance.Migrations
                                 .HasColumnType("int")
                                 .UseIdentityColumn();
 
-                            b1.Property<int>("ExperienceLevel")
-                                .HasColumnType("int");
-
                             b1.Property<string>("OwnerId")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("SkillExperience")
+                                .HasColumnType("int");
 
                             b1.Property<string>("SkillName")
                                 .HasColumnType("nvarchar(max)");

@@ -28,6 +28,23 @@ namespace Taskr.Persistance
                 Description = "Please my garden needs trimmin, Im in lagos",
                 InitialPrice = 20.30m
             });
+
+            modelBuilder.Entity<ApplicationUser>().OwnsMany(p => p.SkillSet, a =>
+            {
+                a.WithOwner().HasForeignKey("OwnerId");
+                a.Property<int>("Id");
+                a.HasKey("Id");
+            });
+            
+            modelBuilder.Entity<ApplicationUser>().OwnsMany(p => p.Languages, a =>
+            {
+                a.WithOwner().HasForeignKey("OwnerId");
+                a.Property<int>("Id");
+                a.HasKey("Id");
+            });
+
+            modelBuilder.Entity<ApplicationUser>().OwnsOne(p => p.Socials);
+
         }
     }
 }

@@ -14,5 +14,16 @@ namespace Taskr.Domain
         public virtual ICollection<Job> CreatedJobs { get; set; }
         public string Avatar { get; set; }
         public virtual ICollection<Watch> Watching { get; set; }
+        public string Tagline { get; set; }
+        public Socials Socials { get; set; } 
+        public virtual ICollection<Skill> SkillSet { get; set; }
+        public virtual ICollection<Language> Languages { get; set; }
+    }
+
+    public enum ExperienceLevel
+    {
+        Beginner,
+        Intermediate,
+        Expert
     }
 }
