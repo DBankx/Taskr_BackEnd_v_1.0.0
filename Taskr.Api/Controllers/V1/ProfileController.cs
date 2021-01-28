@@ -54,5 +54,11 @@ namespace Taskr.Api.Controllers.V1
          {
              return await _mediator.Send(command);
          }
+
+         [HttpPost("socials")]
+         public async Task<ActionResult<Unit>> UpdateSocials(UpdateSocialCommand command)
+         {
+             return await _mediator.Send(command);
+         }
     }
 }

@@ -57,7 +57,8 @@ namespace Taskr.Handlers.Task
                 CreatedAt = DateTime.Now,
                 DeliveryDate = request.EndDate,
                 Category = request.Category, 
-                DeliveryType = request.DeliveryType 
+                DeliveryType = request.DeliveryType,
+                JobStatus = JobStatus.Active
             };
             
             var photoUploadResults = await _photoService.UploadPhoto(request.ImageFiles);
