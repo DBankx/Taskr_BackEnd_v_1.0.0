@@ -16,6 +16,7 @@ namespace Taskr.Persistance
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Watch> Watches { get; set; }
+        public DbSet<AppUserNotification> UserNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

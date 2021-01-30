@@ -10,6 +10,7 @@ using Taskr.Domain;
 using Taskr.Dtos;
 using Taskr.Dtos.Errors;
 using Taskr.Infrastructure.Security;
+using Taskr.Infrastructure.UserNotification;
 using Taskr.Persistance;
 
 namespace Taskr.Handlers.Bid
@@ -19,12 +20,14 @@ namespace Taskr.Handlers.Bid
         private readonly DataContext _context;
         private readonly IUserAccess _userAccess;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public CreateBidHandler(DataContext context, IUserAccess userAccess, IMapper mapper)
+        public CreateBidHandler(DataContext context, IUserAccess userAccess, IMapper mapper, IMediator mediator)
         {
             _context = context;
             _userAccess = userAccess;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<BidDto> Handle(CreateBidCommand request, CancellationToken cancellationToken)
@@ -80,6 +83,10 @@ namespace Taskr.Handlers.Bid
                 throw new Exception("Error occurred while creating bid");
             }
 
+            var appUserNotif = new UserPrivateMessageNotification(job.UserId, user.Id, user.UserName, user.Avatar, $"{user.UserName} placed a bid on {job.Title}", job.Id, DateTime.Now, NotificationType.Bid, NotificationStatus.UnRead);
+
+            await _mediator.Publish(appUserNotif, cancellationToken);
+            
             return _mapper.Map<BidDto>(bid);
         }
     }

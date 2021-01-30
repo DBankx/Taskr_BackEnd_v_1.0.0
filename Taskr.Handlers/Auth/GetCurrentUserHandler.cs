@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Taskr.Domain;
 using Taskr.Dtos.Auth;
 using Taskr.Infrastructure.Jwt;
 using Taskr.Infrastructure.Security;
@@ -34,12 +35,15 @@ namespace Taskr.Handlers.Auth
                     Errors = new[] {"User not found"}
                 };
             }
-
+            var hasNotifs =
+                await _context.UserNotifications.AnyAsync(
+                    x => x.ToUserId == user.Id && x.Status == NotificationStatus.UnRead, cancellationToken: cancellationToken);
             var authUserResponse = new AuthUserResponse
             {
                 Avatar = user.Avatar,
                 Email = user.Email,
-                Username = user.UserName
+                Username = user.UserName,
+                HasUnReadNotifications = hasNotifs
             };
 
             return new AuthResponse

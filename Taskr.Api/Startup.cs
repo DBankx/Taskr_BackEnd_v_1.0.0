@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -22,6 +23,7 @@ using Taskr.Infrastructure.Middlewares;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Infrastructure.PhotoService;
 using Taskr.Infrastructure.Security;
+using Taskr.Infrastructure.SignalRHubs;
 using Taskr.MappingProfiles.Job;
 using Taskr.Persistance;
 using Taskr.Validation.Auth;
@@ -87,9 +89,12 @@ namespace Taskr.Api
             {
                 option.AddDefaultPolicy(builder =>
                 {
-                    builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                    builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000").AllowCredentials();
                 });
             });
+            
+            // SignalR
+            services.AddSignalR();
             
             // AutoMapper
             services.AddAutoMapper(typeof(JobProfile).Assembly);
@@ -120,6 +125,22 @@ namespace Taskr.Api
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     RequireExpirationTime = false
+                };
+
+                option.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        // get the path
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notif"))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -160,6 +181,8 @@ namespace Taskr.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PortalHub>("/notif");
+
             });
         }
     }

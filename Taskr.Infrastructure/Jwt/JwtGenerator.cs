@@ -27,10 +27,7 @@ namespace Taskr.Infrastructure.Jwt
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim("id", user.Id)
+                    new Claim(JwtRegisteredClaimNames.NameId, user.Id)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials =
