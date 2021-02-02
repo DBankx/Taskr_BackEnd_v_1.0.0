@@ -1,4 +1,5 @@
 ﻿using Taskr.Domain;
+using Taskr.Dtos.Profile;
 using Taskr.Infrastructure.UserNotification;
 
 namespace Taskr.MappingProfiles.UserNotifications
@@ -7,7 +8,7 @@ namespace Taskr.MappingProfiles.UserNotifications
     {
         public NotificationsProfile()
         {
-            CreateMap<AppUserNotification, UserPrivateMessageNotification>();
+            CreateMap<AppUserNotification, UserNotificationDto>();
         }
     }
 }

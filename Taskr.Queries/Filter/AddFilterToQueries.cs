@@ -32,7 +32,7 @@ namespace Taskr.Queries.Filter
                 queryable = queryable.Where(x => x.Status == status);
             }
 
-            return queryable;
+            return queryable.OrderByDescending(x => x.CreatedAt);
         }
     }
 }

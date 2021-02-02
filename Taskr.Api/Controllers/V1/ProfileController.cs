@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -9,7 +10,6 @@ using Taskr.Domain;
 using Taskr.Dtos.Job;
 using Taskr.Dtos.Profile;
 using Taskr.Infrastructure.Pagination;
-using Taskr.Infrastructure.UserNotification;
 using Taskr.Queries.Profile;
 using Taskr.Queries.UserNotifications;
 
@@ -66,11 +66,39 @@ namespace Taskr.Api.Controllers.V1
          }
 
          [HttpGet("notifications")]
-         public async Task<ActionResult<PagedResponse<List<UserPrivateMessageNotification>>>> GetNotifications(
+         public async Task<ActionResult<PagedResponse<List<UserNotificationDto>>>> GetNotifications(
              [FromQuery] NotificationStatus status, [FromQuery] PaginationFilter filter, CancellationToken ct)
          {
              var query = new GetNotificationsQuery(status, filter, Request.Path.Value);
              return await _mediator.Send(query, ct);
+         }
+
+         [HttpDelete("notifications/{notificationId}")]
+         public async Task<ActionResult<Unit>> DeleteUserNotification(Guid notificationId, CancellationToken ct)
+         {
+             var command = new DeleteNotificationCommand(notificationId);
+             return await _mediator.Send(command, ct);
+         }
+         
+         [HttpPut("notification/{notificationId}")]
+         public async Task<ActionResult<Unit>> MarkNotificationAsRead(Guid notificationId, CancellationToken ct)
+         {
+             var command = new MarkNotificationAsReadCommand(notificationId);
+             return await _mediator.Send(command, ct);
+         } 
+         
+         [HttpDelete("notification}")]
+         public async Task<ActionResult<Unit>> DeleteAllNotifications(CancellationToken ct)
+         { 
+             var command = new DeleteAllNotifications(); 
+             return await _mediator.Send(command, ct);
+         }
+
+         [HttpPut("notification/read")]
+         public async Task<ActionResult<Unit>> MarkAllNotificationsAsRead(CancellationToken ct)
+         {
+             var command = new MarkAllNotificationsAsRead();
+             return await _mediator.Send(command, ct);
          }
     }
 }

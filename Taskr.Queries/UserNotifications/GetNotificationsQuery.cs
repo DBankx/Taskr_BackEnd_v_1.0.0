@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using MediatR;
 using Taskr.Domain;
+using Taskr.Dtos.Profile;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Infrastructure.UserNotification;
 
 namespace Taskr.Queries.UserNotifications
 {
-    public class GetNotificationsQuery : IRequest<PagedResponse<List<UserPrivateMessageNotification>>>
+    public class GetNotificationsQuery : IRequest<PagedResponse<List<UserNotificationDto>>>
     {
         public NotificationStatus Status { get; set; }
         public PaginationFilter PaginationFilter { get; set; }

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Taskr.Domain;
 using Taskr.Dtos.Errors;
 using Taskr.Dtos.Job;
+using Taskr.Dtos.Profile;
 using Taskr.Infrastructure.Helpers;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Infrastructure.Security;
@@ -18,7 +19,7 @@ using Taskr.Queries.UserNotifications;
 
 namespace Taskr.Handlers.UserNotifications
 {
-    public class GetNotificationsHandler : IRequestHandler<GetNotificationsQuery, PagedResponse<List<UserPrivateMessageNotification>>>
+    public class GetNotificationsHandler : IRequestHandler<GetNotificationsQuery, PagedResponse<List<UserNotificationDto>>>
     {
         private readonly IQueryProcessor _queryProcessor;
         private readonly IUserAccess _userAccess;
@@ -33,7 +34,7 @@ namespace Taskr.Handlers.UserNotifications
             _uriService = uriService;
         }
         
-        public async Task<PagedResponse<List<UserPrivateMessageNotification>>> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<List<UserNotificationDto>>> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
             var user = await _queryProcessor.Query<ApplicationUser>()
                 .SingleOrDefaultAsync(x => x.Id == _userAccess.GetCurrentUserId(), cancellationToken);
@@ -50,7 +51,7 @@ namespace Taskr.Handlers.UserNotifications
             var validFilter = new PaginationFilter(request.PaginationFilter.PageNumber, request.PaginationFilter.PageSize);
             var pagedData = await notifs.Skip((validFilter.PageNumber - 1) * validFilter.PageSize).Take(validFilter.PageSize).ToListAsync(cancellationToken: cancellationToken);
             var totalRecords = await notifs.CountAsync(cancellationToken: cancellationToken);
-            var pagedResponse = PaginationHelper.CreatePagedReponse<UserPrivateMessageNotification>(_mapper.Map<List<UserPrivateMessageNotification>>(pagedData), validFilter,
+            var pagedResponse = PaginationHelper.CreatePagedReponse<UserNotificationDto>(_mapper.Map<List<UserNotificationDto>>(pagedData), validFilter,
                 totalRecords, _uriService, request.Route);
             return pagedResponse;
         }
