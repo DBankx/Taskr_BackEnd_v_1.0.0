@@ -43,9 +43,7 @@ namespace Taskr.Handlers.UserNotifications
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
 
             var notifs = _queryProcessor.Query<AppUserNotification>()
-                .Where(x => x.ToUserId == user.Id).AsQueryable();
-
-            notifs = AddFilterToQueries.FilterNotifications(request.Status, notifs);
+                .Where(x => x.ToUserId == user.Id).OrderByDescending(x => x.CreatedAt);
             
             // paginating the data
             var validFilter = new PaginationFilter(request.PaginationFilter.PageNumber, request.PaginationFilter.PageSize);

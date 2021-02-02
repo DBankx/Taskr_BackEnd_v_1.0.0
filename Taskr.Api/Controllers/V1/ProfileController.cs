@@ -80,21 +80,21 @@ namespace Taskr.Api.Controllers.V1
              return await _mediator.Send(command, ct);
          }
          
-         [HttpPut("notification/{notificationId}")]
+         [HttpPut("notifications/{notificationId}")]
          public async Task<ActionResult<Unit>> MarkNotificationAsRead(Guid notificationId, CancellationToken ct)
          {
              var command = new MarkNotificationAsReadCommand(notificationId);
              return await _mediator.Send(command, ct);
          } 
          
-         [HttpDelete("notification}")]
+         [HttpDelete("notifications")]
          public async Task<ActionResult<Unit>> DeleteAllNotifications(CancellationToken ct)
          { 
              var command = new DeleteAllNotifications(); 
              return await _mediator.Send(command, ct);
          }
 
-         [HttpPut("notification/read")]
+         [HttpPut("notifications/read")]
          public async Task<ActionResult<Unit>> MarkAllNotificationsAsRead(CancellationToken ct)
          {
              var command = new MarkAllNotificationsAsRead();

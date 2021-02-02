@@ -24,15 +24,6 @@ namespace Taskr.Queries.Filter
             
             return queryable;
         }
-
-        public static IQueryable<AppUserNotification> FilterNotifications(NotificationStatus status, IQueryable<AppUserNotification> queryable)
-        {
-            if(Enum.IsDefined(typeof(NotificationStatus), status))
-            {
-                queryable = queryable.Where(x => x.Status == status);
-            }
-
-            return queryable.OrderByDescending(x => x.CreatedAt);
-        }
+        
     }
 }

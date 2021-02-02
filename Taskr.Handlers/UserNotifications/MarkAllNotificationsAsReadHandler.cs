@@ -31,6 +31,11 @@ namespace Taskr.Handlers.UserNotifications
 
             var notifications = await _context.UserNotifications.Where(x => x.ToUserId == user.Id).ToListAsync(cancellationToken);
 
+            if (notifications.All(x => x.Status == NotificationStatus.Read))
+            {
+                throw new RestException(HttpStatusCode.BadRequest, new {errors = "All your notifications are read"});
+            }
+            
             foreach (var notif in notifications)
             {
                 notif.Status = NotificationStatus.Read;
