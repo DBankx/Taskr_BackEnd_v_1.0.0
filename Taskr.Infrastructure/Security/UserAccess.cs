@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Taskr.Domain;
 
@@ -15,7 +16,7 @@ namespace Taskr.Infrastructure.Security
         
         public string GetCurrentUserId()
         {
-            return _httpContextAccessor.HttpContext?.User?.Claims?.SingleOrDefault(x => x.Type == "id")?.Value;
+            return _httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         }
     }
 }

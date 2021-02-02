@@ -23,6 +23,7 @@ namespace Taskr.Queries.Filter
             } 
             
             return queryable;
-        } 
+        }
+        
     }
 }

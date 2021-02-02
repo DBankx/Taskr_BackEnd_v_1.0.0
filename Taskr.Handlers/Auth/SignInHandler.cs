@@ -1,7 +1,9 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Taskr.Commands.Auth;
 using Taskr.Domain;
 using Taskr.Dtos.Auth;
@@ -45,11 +47,15 @@ namespace Taskr.Handlers.Auth
                 };
             }
 
+            var hasNotifs =
+                await _context.UserNotifications.AnyAsync(
+                    x => x.ToUserId == user.Id && x.Status == NotificationStatus.UnRead, cancellationToken: cancellationToken);
             var authUserResponse = new AuthUserResponse
             {
                 Email = user.Email,
                 Username = user.UserName,
-                Avatar = user.Avatar
+                Avatar = user.Avatar,
+                HasUnReadNotifications = hasNotifs
             };
 
             return new AuthResponse
