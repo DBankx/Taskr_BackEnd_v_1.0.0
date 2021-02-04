@@ -46,18 +46,17 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpGet("get-bid/{bidId}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Bid>> GetBidById(Guid bidId, CancellationToken ct)
+        public async Task<ActionResult<SingleBidDto>> GetBidById(Guid bidId, CancellationToken ct)
         {
             var query = new GetBidByIdQuery(bidId);
             return await _mediator.Send(query, ct);
         }
 
-        [HttpPost("decline/{jobId}/{bidId}")]
-        public async Task<ActionResult<Unit>> DeclineBid(Guid jobId, Guid bidId, CancellationToken ct)
+        [HttpPut("seen/{bidId}")]
+        public async Task<ActionResult<Unit>> MarkBidAsSeen(Guid bidId)
         {
-            var command = new DeclineBidCommand(bidId, jobId);
-            return await _mediator.Send(command, ct);
+            var markBidAsSeenCommand = new MarkBidAsSeen(bidId);
+            return await _mediator.Send(markBidAsSeenCommand);
         }
     }
 }
