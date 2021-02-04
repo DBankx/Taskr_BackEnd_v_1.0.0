@@ -24,7 +24,6 @@ namespace Taskr.Domain
         {
             Submitted,
             Seen,
-            Rejected,
             Approved
         }
 }

@@ -55,7 +55,8 @@ namespace Taskr.Handlers.Auth
                 Email = user.Email,
                 Username = user.UserName,
                 Avatar = user.Avatar,
-                HasUnReadNotifications = hasNotifs
+                HasUnReadNotifications = hasNotifs,
+                Id = user.Id
             };
 
             return new AuthResponse

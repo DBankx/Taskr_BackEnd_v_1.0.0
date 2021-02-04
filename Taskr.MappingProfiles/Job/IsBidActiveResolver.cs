@@ -1,7 +1,5 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Taskr.Domain;
 using Taskr.Dtos.Job;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
@@ -28,7 +26,7 @@ namespace Taskr.MappingProfiles.Job
                 return false;
             }
 
-            var bid = _context.Bids.SingleOrDefaultAsync(x => x.JobId == source.Id && x.UserId == user.Id && x.Status != BidStatus.Rejected).Result;
+            var bid = _context.Bids.SingleOrDefaultAsync(x => x.JobId == source.Id && x.UserId == user.Id).Result;
 
             return bid != null;
         }
