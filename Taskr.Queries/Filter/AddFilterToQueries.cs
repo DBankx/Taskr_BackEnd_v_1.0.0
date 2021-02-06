@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Taskr.Domain;
 using Taskr.Queries.Task.Filter;
@@ -24,6 +25,36 @@ namespace Taskr.Queries.Filter
             
             return queryable;
         }
-        
+
+        public static List<Job> FilterWatchlist(string sortBy, List<Job> queryable)
+        {
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                switch (sortBy)
+                {
+                    case "LOWEST_PRICE":
+                        queryable = queryable.OrderBy(x => x.InitialPrice).ToList();
+                        break;
+                    case "HIGHEST_PRICE":
+                        queryable = queryable.OrderByDescending(x => x.InitialPrice).ToList();
+                        break;
+                    case "TITLE_A_TO_Z":
+                        queryable = queryable.OrderBy(x => x.Title).ToList();
+                        break;
+                    case "TITLE_Z_TO_A":
+                        queryable = queryable.OrderByDescending(x => x.Title).ToList();
+                        break;
+                    case "NEWEST":
+                        queryable = queryable.OrderByDescending(x => x.CreatedAt).ToList();
+                        break;
+                    case "OLDEST":
+                        queryable = queryable.OrderBy(x => x.CreatedAt).ToList();
+                        break;
+                    default:
+                        return queryable;
+                }
+            }
+            return queryable;
+        }
     }
 }

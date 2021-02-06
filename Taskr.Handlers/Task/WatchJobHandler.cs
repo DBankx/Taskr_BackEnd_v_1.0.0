@@ -55,7 +55,7 @@ namespace Taskr.Handlers.Task
                 Job = job,
                 WatchedAt = DateTime.Now
             };
-
+            
             _context.Watches.Add(watchData);
 
             var watched = await _context.SaveChangesAsync() > 0;

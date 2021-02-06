@@ -100,5 +100,12 @@ namespace Taskr.Api.Controllers.V1
              var command = new MarkAllNotificationsAsRead();
              return await _mediator.Send(command, ct);
          }
+
+         [HttpGet("watchlist")]
+         public async Task<ActionResult<List<JobsListDto>>> GetUserWatchlist([FromQuery] string sortBy)
+         {
+             var query = new GetUserWatchlist(sortBy);
+             return await _mediator.Send(query);
+         }
     }
 }
