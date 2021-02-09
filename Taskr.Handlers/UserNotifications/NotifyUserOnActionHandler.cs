@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using Taskr.Infrastructure.MediatrNotifications;
 using Taskr.Infrastructure.SignalRHubs;
-using Taskr.Infrastructure.UserNotification;
 
 namespace Taskr.Handlers.UserNotifications
 {

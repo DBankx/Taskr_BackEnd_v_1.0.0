@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Taskr.Commands.Bid;
 using Taskr.Domain;
 using Taskr.Dtos.Errors;
+using Taskr.Infrastructure.MediatrNotifications;
 using Taskr.Infrastructure.Security;
-using Taskr.Infrastructure.UserNotification;
 using Taskr.Persistance;
 
 namespace Taskr.Handlers.Bid

@@ -1,6 +1,5 @@
 ﻿using Taskr.Domain;
 using Taskr.Dtos.Profile;
-using Taskr.Infrastructure.UserNotification;
 
 namespace Taskr.MappingProfiles.UserNotifications
 {

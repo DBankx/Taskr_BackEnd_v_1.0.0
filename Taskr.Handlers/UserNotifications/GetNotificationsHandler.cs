@@ -13,7 +13,6 @@ using Taskr.Dtos.Profile;
 using Taskr.Infrastructure.Helpers;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Infrastructure.Security;
-using Taskr.Infrastructure.UserNotification;
 using Taskr.Queries.Filter;
 using Taskr.Queries.UserNotifications;
 

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using MediatR;
 using Taskr.Domain;
-using Taskr.Infrastructure.UserNotification;
+using Taskr.Infrastructure.MediatrNotifications;
 using Taskr.Persistance;
 
 namespace Taskr.Handlers.UserNotifications

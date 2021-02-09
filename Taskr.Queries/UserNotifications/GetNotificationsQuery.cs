@@ -3,7 +3,6 @@ using MediatR;
 using Taskr.Domain;
 using Taskr.Dtos.Profile;
 using Taskr.Infrastructure.Pagination;
-using Taskr.Infrastructure.UserNotification;
 
 namespace Taskr.Queries.UserNotifications
 {

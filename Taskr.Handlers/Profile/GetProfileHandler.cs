@@ -50,6 +50,7 @@ namespace Taskr.Handlers.Profile
                 Avatar = user.Avatar,
                 Bio = user.Bio,
                 City = user.City,
+                Email = user.Email,
                 CreatedAt = user.CreatedAt,
                 FirstName = user.FirstName,
                 LastName = user.LastName,

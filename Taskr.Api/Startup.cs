@@ -19,6 +19,7 @@ using Taskr.Domain;
 using Taskr.Handlers.Task;
 using Taskr.Infrastructure.Helpers;
 using Taskr.Infrastructure.Jwt;
+using Taskr.Infrastructure.Mail;
 using Taskr.Infrastructure.Middlewares;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Infrastructure.PhotoService;
@@ -47,6 +48,8 @@ namespace Taskr.Api
             Configuration.Bind(nameof(JwtSettings), jwtSettings); 
             services.AddSingleton(jwtSettings);
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            
             
             services.AddControllers().AddFluentValidation(options =>
             {
@@ -156,6 +159,7 @@ namespace Taskr.Api
              });
              services.AddScoped<IPhotoService, PhotoService>();
              services.AddScoped<IQueryProcessor, EfQueryProcessor>();
+             services.AddTransient<IMailService, MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

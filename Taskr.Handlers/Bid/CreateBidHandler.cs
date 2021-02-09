@@ -9,8 +9,9 @@ using Taskr.Commands.Bid;
 using Taskr.Domain;
 using Taskr.Dtos;
 using Taskr.Dtos.Errors;
+using Taskr.Infrastructure.Mail;
+using Taskr.Infrastructure.MediatrNotifications;
 using Taskr.Infrastructure.Security;
-using Taskr.Infrastructure.UserNotification;
 using Taskr.Persistance;
 
 namespace Taskr.Handlers.Bid
@@ -38,7 +39,7 @@ namespace Taskr.Handlers.Bid
             if (user == null)
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
             
-            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId, cancellationToken: cancellationToken);
+            var job = await _context.Jobs.Include(x => x.User).SingleOrDefaultAsync(x => x.Id == request.JobId, cancellationToken: cancellationToken);
             
             if (job == null)
             { 
@@ -86,6 +87,14 @@ namespace Taskr.Handlers.Bid
             var appUserNotif = new UserPrivateMessageNotification(job.UserId, user.Id, user.UserName, user.Avatar, $"{user.UserName} placed a bid on {job.Title}", job.Id, DateTime.Now, NotificationType.Bid, NotificationStatus.UnRead);
 
             await _mediator.Publish(appUserNotif, cancellationToken);
+
+             _mediator.Publish(new MailRequestNotification
+            {
+                To = job.User.Email, Subject = $"Someone has made an offer for your task {job.Title}",
+                Body =
+                    $"<h1>Hi {job.User.FirstName}</h1> <p>People are lining up to do your task <a href='http://localhost:3000/task/{job.Id}'>{job.Title}</a>.</p><p>Its time to make a decision, who will you choose?</p>, <p>Thanks,</p><p>Taskr</p>"
+            }, cancellationToken);
+            
             
             return _mapper.Map<BidDto>(bid);
         }

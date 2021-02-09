@@ -2,7 +2,7 @@
 using MediatR;
 using Taskr.Domain;
 
-namespace Taskr.Infrastructure.UserNotification
+namespace Taskr.Infrastructure.MediatrNotifications
 {
     public class UserPrivateMessageNotification : INotification
     {
