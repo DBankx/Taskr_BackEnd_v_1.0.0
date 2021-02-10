@@ -20,7 +20,7 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
+        public async Task<ActionResult> SignUp([FromBody] SignUpCommand command)
         {
             var authResponse = await _mediator.Send(command);
             if (!authResponse.Success)
@@ -39,7 +39,7 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost("signIn")]
-        public async Task<IActionResult> SignIn([FromBody] SignInCommand command)
+        public async Task<ActionResult> SignIn([FromBody] SignInCommand command)
         {
             var authResponse = await _mediator.Send(command);
             if (!authResponse.Success)
@@ -58,7 +58,7 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCurrentUser(CancellationToken ct)
+        public async Task<ActionResult> GetCurrentUser(CancellationToken ct)
         {
             var authQuery = new GetCurrentUserQuery();
             var authResponse = await _mediator.Send(authQuery, ct);
@@ -76,5 +76,11 @@ namespace Taskr.Api.Controllers.V1
                 User = authResponse.User
             });
         }
+
+        [HttpPut("change-password")]
+        public async Task<ActionResult<Unit>> ChangePassword(ChangePassword command)
+        {
+            return await _mediator.Send(command);
+        }   
     }
 }

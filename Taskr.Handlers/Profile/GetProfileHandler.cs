@@ -51,6 +51,7 @@ namespace Taskr.Handlers.Profile
                 Bio = user.Bio,
                 City = user.City,
                 Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
                 CreatedAt = user.CreatedAt,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
