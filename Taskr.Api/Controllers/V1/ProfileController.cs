@@ -11,6 +11,7 @@ using Taskr.Dtos.Job;
 using Taskr.Dtos.Profile;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Queries.Profile;
+using Taskr.Queries.PublicProfile;
 using Taskr.Queries.UserNotifications;
 
 namespace Taskr.Api.Controllers.V1
@@ -102,10 +103,26 @@ namespace Taskr.Api.Controllers.V1
          }
 
          [HttpGet("watchlist")]
-         public async Task<ActionResult<List<JobsListDto>>> GetUserWatchlist([FromQuery] string sortBy)
+         public async Task<ActionResult<List<JobsListDto>>> GetUserWatchlist([FromQuery] string sortBy, CancellationToken ct)
          {
              var query = new GetUserWatchlist(sortBy);
-             return await _mediator.Send(query);
+             return await _mediator.Send(query, ct);
+         }
+
+         [AllowAnonymous]
+         [HttpGet("public/details/{userId}")]
+         public async Task<ActionResult<PublicProfileDto>> GetPublicProfileDetails(string userId, CancellationToken ct)
+         {
+             var query = new GetPublicProfileDetails(userId);
+             return await _mediator.Send(query, ct);
+         }
+
+         [AllowAnonymous]
+         [HttpGet("public/tasks/{userId}")]
+         public async Task<ActionResult<List<JobsListDto>>> GetRecentlyUploadedTasks(string userId, CancellationToken ct)
+         {
+             var query = new GetRecentlyUploadedJobs(userId);
+             return await _mediator.Send(query, ct);
          }
     }
 }

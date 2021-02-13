@@ -16,6 +16,7 @@ using Taskr.Persistance;
 
 namespace Taskr.Handlers.Bid
 {
+    // TODO - change email link from localhost to main deployed url
     public class CreateBidHandler : IRequestHandler<CreateBidCommand, BidDto>
     {
         private readonly DataContext _context;

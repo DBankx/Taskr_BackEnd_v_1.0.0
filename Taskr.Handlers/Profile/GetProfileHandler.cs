@@ -47,6 +47,7 @@ namespace Taskr.Handlers.Profile
 
             var profile = new ProfileDto
             {
+                Id = user.Id,
                 Avatar = user.Avatar,
                 Bio = user.Bio,
                 City = user.City,

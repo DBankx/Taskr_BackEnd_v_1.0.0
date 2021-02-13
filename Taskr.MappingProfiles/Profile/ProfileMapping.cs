@@ -8,6 +8,7 @@ namespace Taskr.MappingProfiles.Profile
         public ProfileMapping()
         {
             CreateMap<ApplicationUser, ProfileDto>();
+            CreateMap<ApplicationUser, PublicProfileDto>();
         }
     }
 }
