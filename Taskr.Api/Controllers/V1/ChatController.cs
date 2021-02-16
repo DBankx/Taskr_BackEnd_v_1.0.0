@@ -12,7 +12,7 @@ using Taskr.Queries.Chat;
 namespace Taskr.Api.Controllers.V1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [Authorize]
     public class ChatController : ControllerBase
     {
