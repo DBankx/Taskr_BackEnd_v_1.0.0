@@ -14,9 +14,14 @@ namespace Taskr.Persistance
 
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Bid> Bids { get; set; }
+        
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Watch> Watches { get; set; }
         public DbSet<AppUserNotification> UserNotifications { get; set; }
+        
+        public DbSet<Chat> Chats { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

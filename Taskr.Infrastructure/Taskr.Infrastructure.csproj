@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Taskr.Commands\Taskr.Commands.csproj" />
       <ProjectReference Include="..\Taskr.Domain\Taskr.Domain.csproj" />
       <ProjectReference Include="..\Taskr.Dtos\Taskr.Dtos.csproj" />
       <ProjectReference Include="..\Taskr.Persistance\Taskr.Persistance.csproj" />
