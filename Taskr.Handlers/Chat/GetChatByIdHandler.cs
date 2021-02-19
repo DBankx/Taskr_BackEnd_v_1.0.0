@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -35,8 +36,10 @@ namespace Taskr.Handlers.Chat
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
 
             var chat = await _queryProcessor.Query<Domain.Chat>().Include(x => x.Job).ThenInclude(x => x.Photos)
-                .Include(x => x.Messages).ThenInclude(x => x.Sender)
+                .Include(x => x.Messages).ThenInclude(x => x.Sender).Include(x => x.Runner).Include(x => x.Taskr)
                 .SingleOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
+
+            chat.Messages = chat.Messages.OrderBy(x => x.SentAt).ToList();
 
             if (chat == null) throw new RestException(HttpStatusCode.NotFound, new {error = "Chat not found"});
 

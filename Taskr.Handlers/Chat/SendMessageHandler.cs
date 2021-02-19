@@ -39,12 +39,9 @@ namespace Taskr.Handlers.Chat
 
             if (receiver == null) throw new RestException(HttpStatusCode.NotFound, new {error = "Receiver not found"});
             
-            var chat = await _context.Chats.SingleOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
+            var chat = await _context.Chats.Include(x => x.Job).SingleOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
 
             if (chat == null) throw new RestException(HttpStatusCode.BadRequest, new {error = "Chat not found"});
-
-            if (receiver.Id != chat.Runner.Id || receiver.Id != chat.Taskr.Id)
-                throw new RestException(HttpStatusCode.BadRequest, new {error = "Receiver not in chat"});
 
             var message = new Message
             {
@@ -63,7 +60,7 @@ namespace Taskr.Handlers.Chat
                 throw new Exception("Error occurred while creating bid");
             }
             
-            var appUserNotif = new UserPrivateMessageNotification(receiver.Id, user.Id, user.UserName, user.Avatar, $"{user.UserName} sent you a message about {chat.Job.Title} ", chat.Id, DateTime.Now, NotificationType.Message, NotificationStatus.UnRead);
+            var appUserNotif = new UserPrivateMessageNotification(receiver.Id, user.Id, user.UserName, user.Avatar, $"{user.UserName} sent you a message", chat.Id, DateTime.Now, NotificationType.Message, NotificationStatus.UnRead);
 
             _mediator.Publish(appUserNotif, cancellationToken);
 

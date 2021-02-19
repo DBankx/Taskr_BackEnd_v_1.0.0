@@ -8,6 +8,8 @@ namespace Taskr.Dtos.Chat
     {
         public Guid Id { get; set; }
         public string JobTitle { get; set; }
+        
+        public string JobId{ get; set; }
         public decimal JobBudget { get; set; }
         public ICollection<Domain.Photo> JobPhotos { get; set; }
         public DateTime CreatedAt { get; set; }
