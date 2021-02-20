@@ -16,13 +16,11 @@ namespace Taskr.Handlers.Task
 {
     public class GetJobByIdHandler : IRequestHandler<GetJobByIdQuery, JobDto>
     {
-        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IQueryProcessor _queryProcessor;
 
-        public GetJobByIdHandler(DataContext context, IMapper mapper, IQueryProcessor queryProcessor)
+        public GetJobByIdHandler( IMapper mapper, IQueryProcessor queryProcessor)
         {
-            _context = context;
             _mapper = mapper;
             _queryProcessor = queryProcessor;
         }

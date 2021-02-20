@@ -24,8 +24,8 @@ namespace Taskr.MappingProfiles.Chat
                 .ForMember(x => x.JobPhotos, opt => opt.MapFrom(x => x.Job.Photos))
                 .ForMember(x => x.JobTitle, opt => opt.MapFrom(x => x.Job.Title))
                 .ForMember(x => x.JobId, opt => opt.MapFrom(x => x.Job.Id))
-                .ForMember(x => x.RunnerId, opt => opt.MapFrom(x => x.Runner.Id))
-                .ForMember(x => x.TaskrId, opt => opt.MapFrom(x => x.Taskr.Id));
+                .ForMember(x => x.Runner, opt => opt.MapFrom(x => x.Runner))
+                .ForMember(x => x.Taskr, opt => opt.MapFrom(x => x.Taskr));
 
         }
     }

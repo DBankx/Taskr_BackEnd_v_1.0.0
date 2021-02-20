@@ -11,8 +11,8 @@ namespace Taskr.Dtos.Chat
          public decimal JobBudget { get; set; }
          public ICollection<Domain.Photo> JobPhotos { get; set; }
          public DateTime CreatedAt { get; set; }
-         public string TaskrId { get; set; }
-         public string RunnerId { get; set; }
+         public MessageSenderDto Taskr { get; set; }
+         public MessageSenderDto Runner { get; set; }
          public ICollection<MessageDto> Messages { get; set; }
     }
 }

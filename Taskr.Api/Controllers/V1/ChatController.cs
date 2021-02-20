@@ -24,10 +24,11 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost("create/{jobId}/{taskrId}")]
-        public async Task<ActionResult<ChatCreateReturnDto>> CreateChat(Guid jobId, string taskrId, CancellationToken ct)
+        public async Task<ActionResult<Unit>> CreateChat(Guid jobId, string taskrId, CancellationToken ct, CreateChatCommand command)
         {
-            var createChatCommand = new CreateChatCommand(taskrId, jobId);
-            return await _mediator.Send(createChatCommand, ct);
+            command.JobId = jobId;
+            command.TaskrId = taskrId;
+            return await _mediator.Send(command, ct);
         }
 
         [HttpGet]
