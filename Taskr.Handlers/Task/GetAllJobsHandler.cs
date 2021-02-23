@@ -20,14 +20,12 @@ namespace Taskr.Handlers.Task
 {
     public class GetAllJobsHandler : IRequestHandler<GetAllJobsQuery, PagedResponse<List<JobsListDto>>>
     {
-        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IUriService _uriService;
         private readonly IQueryProcessor _queryProcessor;
 
-        public GetAllJobsHandler(DataContext context, IMapper mapper, IUriService uriService, IQueryProcessor queryProcessor)
+        public GetAllJobsHandler(IMapper mapper, IUriService uriService, IQueryProcessor queryProcessor)
         {
-            _context = context;
             _mapper = mapper;
             _uriService = uriService;
             _queryProcessor = queryProcessor;
