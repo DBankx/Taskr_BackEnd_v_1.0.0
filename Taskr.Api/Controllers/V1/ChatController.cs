@@ -44,5 +44,12 @@ namespace Taskr.Api.Controllers.V1
             var query = new GetChatById(chatId);
             return await _mediator.Send(query, ct);
         }
+
+        [HttpDelete("{chatId}")]
+        public async Task<ActionResult<Unit>> DeleteChat(Guid chatId, CancellationToken ct)
+        {
+            var command = new DeleteChatCommand(chatId);
+            return await _mediator.Send(command, ct);
+        }
     }
 }

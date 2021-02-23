@@ -73,7 +73,7 @@ namespace Taskr.Api.Extensions
                         {
                             option.AddDefaultPolicy(builder =>
                             {
-                                builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000").AllowCredentials();
+                                builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(new string[]{"http://localhost:3001", "http://localhost:3000"}).AllowCredentials();
                             });
                         });
                         

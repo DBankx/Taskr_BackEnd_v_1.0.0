@@ -23,5 +23,6 @@ namespace Taskr.Dtos.Job
         public int WatchCount { get; set; }
         public bool IsBidActive { get; set; }
         public bool IsWatching { get; set; }
+        public bool IsChatActive { get; set; }
     }
 }
