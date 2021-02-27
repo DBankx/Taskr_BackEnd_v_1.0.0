@@ -18,6 +18,8 @@ namespace Taskr.Domain
         public Socials Socials { get; set; } 
         public virtual ICollection<Skill> SkillSet { get; set; }
         public virtual ICollection<Language> Languages { get; set; }
+        public ICollection<Order> Orders{ get; set; }
+
     }
 
     public enum ExperienceLevel

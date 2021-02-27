@@ -87,7 +87,7 @@ namespace Taskr.Handlers.Bid
 
             var appUserNotif = new UserPrivateMessageNotification(job.UserId, user.Id, user.UserName, user.Avatar, $"{user.UserName} placed a bid on {job.Title}", job.Id, DateTime.Now, NotificationType.Bid, NotificationStatus.UnRead);
 
-            await _mediator.Publish(appUserNotif, cancellationToken);
+            _mediator.Publish(appUserNotif, cancellationToken);
 
              _mediator.Publish(new MailRequestNotification
             {

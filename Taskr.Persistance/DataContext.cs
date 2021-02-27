@@ -22,6 +22,7 @@ namespace Taskr.Persistance
         public DbSet<Chat> Chats { get; set; }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
