@@ -51,5 +51,13 @@ namespace Taskr.Api.Controllers.V1
             var command = new DeleteChatCommand(chatId);
             return await _mediator.Send(command, ct);
         }
+
+        [HttpPost("send/{jobId}/{runnerId}")]
+        public async Task<ActionResult<ChatDto>> SendChatToRunner(Guid jobId, string runnerId, SendChatToRunner command, CancellationToken ct)
+        {
+            command.JobId = jobId;
+            command.RunnerId = runnerId;
+            return await _mediator.Send(command, ct);
+        }
     }
 }

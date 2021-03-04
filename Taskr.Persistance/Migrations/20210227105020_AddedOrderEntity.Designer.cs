@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskr.Persistance;
 
 namespace Taskr.Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210227105020_AddedOrderEntity")]
+    partial class AddedOrderEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,9 +347,6 @@ namespace Taskr.Persistance.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AssignedUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -383,11 +382,24 @@ namespace Taskr.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedUserId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("64fa643f-2d35-46e7-b3f8-31fa673d719b"),
+                            Category = 0,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeliveryDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeliveryType = 0,
+                            Description = "Please my garden needs trimmin, Im in lagos",
+                            InitialPrice = 20.30m,
+                            JobStatus = 0,
+                            Title = "Garden Trimming in Lagos Ajah",
+                            Views = 0
+                        });
                 });
 
             modelBuilder.Entity("Taskr.Domain.Message", b =>
@@ -448,9 +460,6 @@ namespace Taskr.Persistance.Migrations
 
                     b.Property<string>("PayToId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("PaymentCompletedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -695,17 +704,9 @@ namespace Taskr.Persistance.Migrations
 
             modelBuilder.Entity("Taskr.Domain.Job", b =>
                 {
-                    b.HasOne("Taskr.Domain.ApplicationUser", "AssignedUser")
-                        .WithMany("AssignedJobs")
-                        .HasForeignKey("AssignedUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Taskr.Domain.ApplicationUser", "User")
                         .WithMany("CreatedJobs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("AssignedUser");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -782,8 +783,6 @@ namespace Taskr.Persistance.Migrations
 
             modelBuilder.Entity("Taskr.Domain.ApplicationUser", b =>
                 {
-                    b.Navigation("AssignedJobs");
-
                     b.Navigation("CreatedJobs");
 
                     b.Navigation("Watching");

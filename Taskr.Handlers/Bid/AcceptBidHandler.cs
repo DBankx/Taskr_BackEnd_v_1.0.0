@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Taskr.Domain;
 using Taskr.Dtos.Errors;
 using Taskr.Dtos.Order;
 using Taskr.Infrastructure.Helpers;
+using Taskr.Infrastructure.MediatrNotifications;
 using Taskr.Infrastructure.Security;
 using Taskr.Persistance;
 
@@ -22,12 +24,14 @@ namespace Taskr.Handlers.Bid
         private readonly DataContext _context;
         private readonly IUserAccess _userAccess;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public AcceptBidHandler(DataContext context, IUserAccess userAccess, IMapper mapper)
+        public AcceptBidHandler(DataContext context, IUserAccess userAccess, IMapper mapper, IMediator mediator)
         {
             _context = context;
             _userAccess = userAccess;
             _mapper = mapper;
+            _mediator = mediator;
         }
         
         public async Task<OrderDetailsDto> Handle(AcceptBidCommand request, CancellationToken cancellationToken)
@@ -38,7 +42,7 @@ namespace Taskr.Handlers.Bid
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
 
             // get the job that is being paid for
-            var job = await _context.Jobs.SingleOrDefaultAsync(x => x.Id == request.JobId, cancellationToken);
+            var job = await _context.Jobs.Include(x => x.Photos).SingleOrDefaultAsync(x => x.Id == request.JobId, cancellationToken);
 
             if (job == null) throw new RestException(HttpStatusCode.NotFound, new {error = "Task not found"});
             
@@ -53,7 +57,7 @@ namespace Taskr.Handlers.Bid
             if(bid == null) throw new RestException(HttpStatusCode.NotFound, new {error = "Bid not found"});
 
             // Create order
-            var order = new Order
+            var order = new Domain.Order
             {
                 Job = job,
                 Status = OrderStatus.Pending,
@@ -65,9 +69,11 @@ namespace Taskr.Handlers.Bid
                 PayTo = bid.User
             };
 
-            var domain = "http://localhost:3000/checkout";
-            
-            // create stripe checkout session
+            var domain = Environment.GetEnvironmentVariable("CLIENT_URL") + $"/checkout/{order.OrderNumber}";
+
+            var photos = job.Photos.Select(x => x.Url).ToList();
+
+            // create stripe checkout sessiond
             var checkoutOptions = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string>
@@ -80,20 +86,21 @@ namespace Taskr.Handlers.Bid
                     {
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            UnitAmountDecimal = order.TotalAmount * 1000,
+                            UnitAmountDecimal = order.TotalAmount * 100,
                             Currency = "usd",
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
                                 Name = job.Title,
-                                Description = job.Description
+                                Description = $"Accepted to pay {bid.Price} to {bid.User.UserName} to complete '{job.Title}'. Please note that all payments are held by Taskr inc. until you have accepted the completion of the task.",
+                                Images = photos
                             },
                         },
-                        Quantity = 1
+                        Quantity = 1,
                     }
                 },
                 Mode = "payment",
                 SuccessUrl = domain + "?success=true",
-                CancelUrl = domain + "?cancelled=true"
+                CancelUrl = domain + "?cancelled=true",
             };
             
             var service = new SessionService();
@@ -101,7 +108,7 @@ namespace Taskr.Handlers.Bid
 
             // Add checkout session details to order
             order.CheckoutSessionId = session.Id;
-            order.OrderCompletedDate = DateTime.Now;
+            order.PaymentCompletedDate = DateTime.Now;
 
             // add order to db
             _context.Orders.Add(order);
@@ -109,10 +116,8 @@ namespace Taskr.Handlers.Bid
             var completedPayment = await _context.SaveChangesAsync(cancellationToken) > 0;
 
             if (!completedPayment) throw new Exception("Something went wrong");
-
             // return orderDto object
             return _mapper.Map<OrderDetailsDto>(order);
-
         }
     }
 }

@@ -27,15 +27,7 @@ namespace Taskr.Persistance
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Job>().HasData(new Job
-            {
-                Id = Guid.Parse("64fa643f-2d35-46e7-b3f8-31fa673d719b"),
-                Title = "Garden Trimming in Lagos Ajah",
-                Description = "Please my garden needs trimmin, Im in lagos",
-                InitialPrice = 20.30m
-            });
-
+            
             modelBuilder.Entity<ApplicationUser>().OwnsMany(p => p.SkillSet, a =>
             {
                 a.WithOwner().HasForeignKey("OwnerId");
@@ -51,6 +43,18 @@ namespace Taskr.Persistance
             });
 
             modelBuilder.Entity<ApplicationUser>().OwnsOne(p => p.Socials);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(c => c.CreatedJobs)
+                .WithOne(t => t.User)
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(c => c.AssignedJobs)
+                .WithOne(t => t.AssignedUser)
+                .HasForeignKey(t => t.AssignedUserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

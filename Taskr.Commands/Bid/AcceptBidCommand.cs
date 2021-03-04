@@ -4,7 +4,7 @@ using Taskr.Dtos.Order;
 
 namespace Taskr.Commands.Bid
 {
-    public class AcceptBidCommand : IRequest, IRequest<OrderDetailsDto>
+    public class AcceptBidCommand : IRequest<OrderDetailsDto>
     {
         public Guid BidId { get; set; }
         public Guid JobId { get; set; }

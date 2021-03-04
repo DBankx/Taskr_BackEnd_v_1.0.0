@@ -17,7 +17,8 @@ namespace Taskr.Dtos.Job
         public DateTime DeliveryDate { get; set; }
         public string Address { get; set; }
         public string PostCode { get; set; }
-        public JobCreatorDto Creator { get; set; }
+        public JobStatus JobStatus { get; set; }
+        public JobUserDto Creator { get; set; }
         public bool IsWatching { get; set; }
         public DeliveryTypes DeliveryType { get; set; }
     }

@@ -61,10 +61,10 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost("accept/{jobId}/{bidId}")]
-        public async Task<ActionResult<OrderDetailsDto>> AcceptBid(Guid jobId, Guid bidId)
+        public async Task<ActionResult<OrderDetailsDto>> AcceptBid(Guid jobId, Guid bidId, CancellationToken ct)
         {
             var acceptBidCommand = new AcceptBidCommand(bidId, jobId);
-            
+            return await _mediator.Send(acceptBidCommand, ct);
         }
     }
 }

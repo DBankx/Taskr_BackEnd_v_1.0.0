@@ -2,7 +2,7 @@
 
 namespace Taskr.Dtos.Job
 {
-    public class JobCreatorDto
+    public class JobUserDto
     {
         public string Id { get; set; }
         public string UserName { get; set; }

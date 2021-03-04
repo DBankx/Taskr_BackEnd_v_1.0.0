@@ -9,7 +9,11 @@ namespace Taskr.MappingProfiles.Order
         {
             CreateMap<Domain.Bid, OrderBid>();
             CreateMap<ApplicationUser, OrderUser>();
-            CreateMap<Domain.Order, OrderDetailsDto>();
+            CreateMap<Domain.Job, OrderJob>();
+            CreateMap<Domain.Order, OrderDetailsDto>()
+                .ForMember(x => x.Chat, opt => opt.MapFrom<OrderChatResolver>());
+            CreateMap<Domain.Job, OrderListJob>();
+            CreateMap<Domain.Order, ListOrderDto>();
         }
     }
 }

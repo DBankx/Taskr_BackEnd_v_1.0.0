@@ -16,7 +16,6 @@ using Taskr.Persistance;
 
 namespace Taskr.Handlers.Bid
 {
-    // TODO - change email link from localhost to main deployed url
     public class CreateBidHandler : IRequestHandler<CreateBidCommand, BidDto>
     {
         private readonly DataContext _context;
@@ -93,7 +92,7 @@ namespace Taskr.Handlers.Bid
             {
                 To = job.User.Email, Subject = $"Someone has made an offer for your task {job.Title}",
                 Body =
-                    $"<h1>Hi {job.User.FirstName}</h1> <p>People are lining up to do your task <a href='http://localhost:3000/task/{job.Id}'>{job.Title}</a>.</p><p>Its time to make a decision, who will you choose?</p>, <p>Thanks,</p><p>Taskr</p>"
+                    $"<h1>Hi {job.User.FirstName}</h1> <p>People are lining up to do your task <a href='{Environment.GetEnvironmentVariable("CLIENT_URL")}/task/{job.Id}'>{job.Title}</a>.</p><p>Its time to make a decision, who will you choose?</p>, <p>Thanks,</p><p>Taskr</p>"
             }, cancellationToken);
             
             
