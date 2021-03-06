@@ -15,6 +15,7 @@ namespace Taskr.Domain
         [Column(TypeName = "decimal(18,2)")] 
         public decimal TotalAmount { get; set; }
         public ApplicationUser PayTo { get; set; }
+        public DateTime OrderStartedDate { get; set; }
         public DateTime PaymentCompletedDate { get; set; }
         public DateTime OrderCompletedDate { get; set; }
         public string CheckoutSessionId { get; set; }

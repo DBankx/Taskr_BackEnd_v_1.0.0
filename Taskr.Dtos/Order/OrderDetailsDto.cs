@@ -13,6 +13,7 @@ namespace Taskr.Dtos.Order
         public OrderUser PayTo { get; set; }
         public OrderJob Job { get; set; }
         public DateTime OrderPlacementDate{ get; set; }
+        public DateTime OrderStartedDate { get; set; }
         public OrderStatus Status{ get; set; }
         public OrderBid AcceptedBid { get; set; }
         [Column(TypeName = "decimal(18,2)")] 
