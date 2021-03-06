@@ -40,6 +40,12 @@ namespace Taskr.Handlers.Order
 
             if (order == null) throw new RestException(HttpStatusCode.NotFound, new {error = "Order not found"});
 
+            if (order.User.Id != user.Id && order.PayTo.Id != user.Id)
+            {
+                throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized to complete this action"});
+                            
+            }
+                
             return _mapper.Map<OrderDetailsDto>(order);
         }
     }

@@ -67,23 +67,26 @@ namespace Taskr.Queries.Filter
             return queryable;
         }
 
-        public static List<Domain.Order> FilterOrders(string predicate, List<Domain.Order> queryable)
+        public static List<Domain.Order> FilterOrders(string predicate, List<Domain.Order> queryable, string userId) 
         {
             if (!string.IsNullOrEmpty(predicate))
             {
                 switch (predicate)
                 {
                     case "ACTIVE":
-                        queryable = queryable.Where(x => x.Status == OrderStatus.Confirmed).ToList();
+                        queryable = queryable.Where(x => x.Status == OrderStatus.Confirmed && x.User.Id == userId).ToList();
+                        break;
+                    case "RUNNER":
+                        queryable = queryable.Where(x => x.PayTo.Id == userId).ToList();
                         break;
                     case "COMPLETED":
-                        queryable = queryable.Where(x => x.Status == OrderStatus.Completed).ToList();
+                        queryable = queryable.Where(x => x.Status == OrderStatus.Completed && x.User.Id == userId).ToList();
                         break;
                     case "PAYOUT": 
-                        queryable = queryable.Where(x => x.Status == OrderStatus.AwaitingPayout).ToList();
+                        queryable = queryable.Where(x => x.Status == OrderStatus.AwaitingPayout && x.User.Id == userId).ToList();
                         break;
                     case "CANCELLED": 
-                        queryable = queryable.Where(x => x.Status == OrderStatus.Cancelled).ToList();
+                        queryable = queryable.Where(x => x.Status == OrderStatus.Cancelled && x.User.Id == userId).ToList();
                         break;
                     default:
                         return queryable;

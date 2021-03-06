@@ -38,9 +38,9 @@ namespace Taskr.Handlers.Order
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
 
             var orders = await _queryProcessor.Query<Domain.Order>().Include(x => x.Job).ThenInclude(x => x.Photos)
-                .Include(x => x.User).Where(x => x.User == user).AsQueryable().ToListAsync(cancellationToken);
+                .Include(x => x.User).Include(x => x.PayTo).ToListAsync(cancellationToken);
 
-            var filteredOrders = AddFilterToQueries.FilterOrders(request.Predicate, orders);
+            var filteredOrders = AddFilterToQueries.FilterOrders(request.Predicate, orders, user.Id);
 
             return _mapper.Map<List<ListOrderDto>>(filteredOrders);
         }

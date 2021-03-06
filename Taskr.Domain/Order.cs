@@ -26,6 +26,7 @@ namespace Taskr.Domain
         Completed,
         Cancelled,
         Confirmed,
-        AwaitingPayout
+        AwaitingPayout,
+        Started
     }
 }

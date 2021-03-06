@@ -49,5 +49,11 @@ namespace Taskr.Api.Controllers.V1
         {
             return await _mediator.Send(new GetOrderByNumber(orderNumber), ct);
         }
+
+        [HttpPut("start/{orderNumber}")]
+        public async Task<ActionResult<Unit>> MarkOrderAsStarted(string orderNumber, CancellationToken ct)
+        {
+            return await _mediator.Send(new MarkOrderAsStarted(orderNumber), ct);
+        }
     }
 }
