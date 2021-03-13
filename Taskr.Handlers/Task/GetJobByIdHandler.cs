@@ -32,6 +32,7 @@ namespace Taskr.Handlers.Task
                 .Include(x => x.Photos)
                 .Include(x => x.Bids)
                 .Include(x => x.Watching)
+                .Include(x => x.AssignedUser)
                 .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
             
             if (job == null)

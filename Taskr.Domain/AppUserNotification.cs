@@ -22,6 +22,7 @@ namespace Taskr.Domain
         Message,
         Follow,
         Assign,
+        Order 
     }
 
     public enum NotificationStatus

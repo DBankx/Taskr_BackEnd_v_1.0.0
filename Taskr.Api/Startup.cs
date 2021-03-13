@@ -1,9 +1,11 @@
+using System;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stripe;
 using Taskr.Api.Extensions;
 using Taskr.Infrastructure.Middlewares;
 using Taskr.Infrastructure.SignalRHubs;
@@ -36,6 +38,8 @@ namespace Taskr.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ErrorHandlingMiddleware>();
+            StripeConfiguration.ApiKey =
+                Environment.GetEnvironmentVariable("STRIPE_SECRET_KEY");
             if (env.IsDevelopment())
             {
                 app.UseSwagger();

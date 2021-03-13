@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Stripe;
 using Taskr.Domain;
 using Taskr.Handlers.Task;
 using Taskr.Infrastructure.Helpers;
@@ -19,6 +21,7 @@ using Taskr.Infrastructure.Mail;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Infrastructure.PhotoService;
 using Taskr.Infrastructure.Security;
+using Taskr.Infrastructure.Stripe;
 using Taskr.MappingProfiles.Job;
 using Taskr.Persistance;
 
@@ -35,7 +38,16 @@ namespace Taskr.Api.Extensions
                                     services.AddSingleton(jwtSettings);
                                     services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
                                     services.Configure<MailSettings>(config.GetSection("MailSettings"));
+            
+                                    // Stripe settings
+                                    services.Configure<StripeOptions>(options =>
+                                    {
+                                        options.SecretKey = Environment.GetEnvironmentVariable("STRIPE_SECRET_KEY");
+                                        options.PublishableKey= Environment.GetEnvironmentVariable("STRIPE_PUBLISHABLE_KEY");
+                                    });
+
                                     
+            
                         services.AddSwaggerGen(c =>
                         {
                             c.SwaggerDoc("v1", new OpenApiInfo {Title = "Taskr_Api", Version = "v1"});

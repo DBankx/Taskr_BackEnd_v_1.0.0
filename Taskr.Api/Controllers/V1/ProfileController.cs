@@ -124,5 +124,11 @@ namespace Taskr.Api.Controllers.V1
              var query = new GetRecentlyUploadedJobs(userId);
              return await _mediator.Send(query, ct);
          }
+
+         [HttpPost("bank")]
+         public async Task<ActionResult<Unit>> CreateBankAccount(AddBankAccount command, CancellationToken ct)
+         {
+             return await _mediator.Send(command, ct);
+         }
     }
 }

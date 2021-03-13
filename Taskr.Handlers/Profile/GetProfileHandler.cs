@@ -60,7 +60,8 @@ namespace Taskr.Handlers.Profile
                 SkillSet = user.SkillSet,
                 Languages = user.Languages,
                 Socials = user.Socials,
-                Tagline = user.Tagline
+                Tagline = user.Tagline,
+                BankAccount = user.BankAccount
             };
 
             return profile;

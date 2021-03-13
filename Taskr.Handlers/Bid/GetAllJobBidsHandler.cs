@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -32,8 +33,8 @@ namespace Taskr.Handlers.Bid
             var bids = await _queryProcessor.Query<Domain.Bid>()
                 .Include(x => x.Job)
                 .Include(x => x.User)
-                .Where(x => x.JobId == request.JobId).ToListAsync(cancellationToken: cancellationToken); 
-
+                .Where(x => x.JobId == request.JobId).ToListAsync(cancellationToken: cancellationToken);    
+            
             return _mapper.Map<List<TaskBidDto>>(bids);
         }
     }

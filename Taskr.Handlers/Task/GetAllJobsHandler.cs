@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -45,7 +46,6 @@ namespace Taskr.Handlers.Task
                 .Include(x => x.Photos)
                 .Include(x => x.Watching).AsQueryable();
             
-
             queryable = AddFilterToQueries.FilterJobs(request.JobFilters, queryable);
             
             // paginating the data

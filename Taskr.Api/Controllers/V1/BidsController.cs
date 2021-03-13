@@ -11,6 +11,7 @@ using Taskr.Commands.Bid;
 using Taskr.Domain;
 using Taskr.Dtos;
 using Taskr.Dtos.Bid;
+using Taskr.Dtos.Order;
 using Taskr.Infrastructure.ExtensionMethods;
 using Taskr.Queries.Bid;
 
@@ -57,6 +58,13 @@ namespace Taskr.Api.Controllers.V1
         {
             var markBidAsSeenCommand = new MarkBidAsSeen(bidId);
             return await _mediator.Send(markBidAsSeenCommand);
+        }
+
+        [HttpPost("accept/{jobId}/{bidId}")]
+        public async Task<ActionResult<OrderDetailsDto>> AcceptBid(Guid jobId, Guid bidId, CancellationToken ct)
+        {
+            var acceptBidCommand = new AcceptBidCommand(bidId, jobId);
+            return await _mediator.Send(acceptBidCommand, ct);
         }
     }
 }

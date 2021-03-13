@@ -251,6 +251,9 @@ namespace Taskr.Persistance.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StripeCustomerId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Tagline")
                         .HasColumnType("nvarchar(max)");
 
@@ -345,6 +348,9 @@ namespace Taskr.Persistance.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AssignedUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -380,24 +386,11 @@ namespace Taskr.Persistance.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignedUserId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Jobs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("64fa643f-2d35-46e7-b3f8-31fa673d719b"),
-                            Category = 0,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeliveryDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeliveryType = 0,
-                            Description = "Please my garden needs trimmin, Im in lagos",
-                            InitialPrice = 20.30m,
-                            JobStatus = 0,
-                            Title = "Garden Trimming in Lagos Ajah",
-                            Views = 0
-                        });
                 });
 
             modelBuilder.Entity("Taskr.Domain.Message", b =>
@@ -430,6 +423,61 @@ namespace Taskr.Persistance.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Taskr.Domain.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AcceptedBidId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CheckoutSessionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("OrderCompletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OrderPlacementDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("OrderStartedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PayToId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("PaymentCompletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AcceptedBidId");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("PayToId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Taskr.Domain.Photo", b =>
@@ -527,6 +575,43 @@ namespace Taskr.Persistance.Migrations
 
             modelBuilder.Entity("Taskr.Domain.ApplicationUser", b =>
                 {
+                    b.OwnsOne("Taskr.Domain.BankAccount", "BankAccount", b1 =>
+                        {
+                            b1.Property<string>("ApplicationUserId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("AccountHolderName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("AccountHolderType")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("AccountNumber")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("BankName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Currency")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("RoutingNumber")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("ApplicationUserId");
+
+                            b1.ToTable("AspNetUsers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ApplicationUserId");
+                        });
+
                     b.OwnsOne("Taskr.Domain.Socials", "Socials", b1 =>
                         {
                             b1.Property<string>("ApplicationUserId")
@@ -606,6 +691,8 @@ namespace Taskr.Persistance.Migrations
                                 .HasForeignKey("OwnerId");
                         });
 
+                    b.Navigation("BankAccount");
+
                     b.Navigation("Languages");
 
                     b.Navigation("SkillSet");
@@ -653,9 +740,17 @@ namespace Taskr.Persistance.Migrations
 
             modelBuilder.Entity("Taskr.Domain.Job", b =>
                 {
+                    b.HasOne("Taskr.Domain.ApplicationUser", "AssignedUser")
+                        .WithMany("AssignedJobs")
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Taskr.Domain.ApplicationUser", "User")
                         .WithMany("CreatedJobs")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("AssignedUser");
 
                     b.Navigation("User");
                 });
@@ -679,6 +774,33 @@ namespace Taskr.Persistance.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("Taskr.Domain.Order", b =>
+                {
+                    b.HasOne("Taskr.Domain.Bid", "AcceptedBid")
+                        .WithMany()
+                        .HasForeignKey("AcceptedBidId");
+
+                    b.HasOne("Taskr.Domain.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId");
+
+                    b.HasOne("Taskr.Domain.ApplicationUser", "PayTo")
+                        .WithMany()
+                        .HasForeignKey("PayToId");
+
+                    b.HasOne("Taskr.Domain.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("AcceptedBid");
+
+                    b.Navigation("Job");
+
+                    b.Navigation("PayTo");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Taskr.Domain.Photo", b =>
@@ -705,6 +827,8 @@ namespace Taskr.Persistance.Migrations
 
             modelBuilder.Entity("Taskr.Domain.ApplicationUser", b =>
                 {
+                    b.Navigation("AssignedJobs");
+
                     b.Navigation("CreatedJobs");
 
                     b.Navigation("Watching");

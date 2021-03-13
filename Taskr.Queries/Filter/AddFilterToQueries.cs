@@ -21,7 +21,17 @@ namespace Taskr.Queries.Filter
             {
                 queryable = queryable.Where(x =>
                     x.InitialPrice >= filter.MinPrice && x.InitialPrice <= filter.MaxPrice);
-            } 
+            }
+
+            switch (filter.SortBy)
+            {
+                case "OLDEST":
+                    queryable = queryable;
+                    break;
+                default:
+                    queryable = queryable.OrderByDescending(x => x.CreatedAt);
+                    break;
+            }
             
             return queryable;
         }
@@ -54,6 +64,35 @@ namespace Taskr.Queries.Filter
                         return queryable;
                 }
             }
+            return queryable;
+        }
+
+        public static List<Domain.Order> FilterOrders(string predicate, List<Domain.Order> queryable, string userId) 
+        {
+            if (!string.IsNullOrEmpty(predicate))
+            {
+                switch (predicate)
+                {
+                    case "ACTIVE":
+                        queryable = queryable.Where(x => x.Status == OrderStatus.Confirmed && x.User.Id == userId || x.Status == OrderStatus.Started && x.User.Id == userId).ToList();
+                        break;
+                    case "RUNNER":
+                        queryable = queryable.Where(x => x.PayTo.Id == userId).ToList();
+                        break;
+                    case "COMPLETED":
+                        queryable = queryable.Where(x => x.Status == OrderStatus.Completed && x.User.Id == userId || x.Status == OrderStatus.Completed && x.PayTo.Id == userId).ToList();
+                        break;
+                    case "PAYOUT": 
+                        queryable = queryable.Where(x => x.Status == OrderStatus.AwaitingPayout && x.PayTo.Id == userId || x.Status == OrderStatus.AwaitingPayout && x.PayTo.Id == userId).ToList();
+                        break;
+                    case "CANCELLED": 
+                        queryable = queryable.Where(x => x.Status == OrderStatus.Cancelled && x.User.Id == userId).ToList();
+                        break;
+                    default:
+                        return queryable;
+                }
+            }
+
             return queryable;
         }
     }
