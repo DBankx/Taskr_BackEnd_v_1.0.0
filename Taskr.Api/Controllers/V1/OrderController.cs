@@ -67,7 +67,12 @@ namespace Taskr.Api.Controllers.V1
                 {
                     return await _mediator.Send(new RejectPayout(orderNumber), ct);
                 }
-        
+
+                [HttpPut("accept-payout/{orderNumber}")]
+                public async Task<ActionResult<Unit>> AcceptPayoutRequest(string orderNumber, CancellationToken ct)
+                {
+                    return await _mediator.Send(new AcceptPayoutRequest(orderNumber), ct);
+                }
         
     }
 }

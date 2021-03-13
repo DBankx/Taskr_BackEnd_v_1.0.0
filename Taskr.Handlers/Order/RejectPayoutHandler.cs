@@ -33,13 +33,13 @@ namespace Taskr.Handlers.Order
             if (user == null)
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
             
-            var order = await _context.Orders.Include(x => x.User).Include(x => x.PayTo).SingleOrDefaultAsync(x => x.OrderNumber == request.OrderNumber, cancellationToken);
+            var order = await _context.Orders.Include(x => x.User).Include(x => x.PayTo).Include(x => x.Job).SingleOrDefaultAsync(x => x.OrderNumber == request.OrderNumber, cancellationToken);
 
             if (order == null) throw new RestException(HttpStatusCode.NotFound, new {error = "Order not found"});
             
             if(order.User != user) throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are not allowed to complete this request"});
 
-            order.Status = OrderStatus.Confirmed;
+            order.Status = OrderStatus.Started;
 
             var requested = await _context.SaveChangesAsync(cancellationToken) > 0;
             
