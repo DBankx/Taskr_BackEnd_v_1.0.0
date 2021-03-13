@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskr.Persistance;
 
 namespace Taskr.Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210307112906_AddedBankAccountEntityToUserModel")]
+    partial class AddedBankAccountEntityToUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,9 +251,6 @@ namespace Taskr.Persistance.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StripeCustomerId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tagline")
@@ -589,9 +588,6 @@ namespace Taskr.Persistance.Migrations
                             b1.Property<string>("AccountNumber")
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.Property<string>("BankName")
-                                .HasColumnType("nvarchar(max)");
-
                             b1.Property<string>("Country")
                                 .HasColumnType("nvarchar(max)");
 
@@ -602,6 +598,9 @@ namespace Taskr.Persistance.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("RoutingNumber")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("StripeAccountId")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("ApplicationUserId");

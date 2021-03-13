@@ -56,6 +56,8 @@ namespace Taskr.Persistance
                 .HasForeignKey(t => t.AssignedUserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<ApplicationUser>().OwnsOne(x => x.BankAccount);
+
         }
     }
 }

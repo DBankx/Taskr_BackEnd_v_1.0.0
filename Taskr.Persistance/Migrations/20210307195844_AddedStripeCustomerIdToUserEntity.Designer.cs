@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskr.Persistance;
 
 namespace Taskr.Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210307195844_AddedStripeCustomerIdToUserEntity")]
+    partial class AddedStripeCustomerIdToUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -602,6 +604,9 @@ namespace Taskr.Persistance.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("RoutingNumber")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("StripeAccountId")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("ApplicationUserId");

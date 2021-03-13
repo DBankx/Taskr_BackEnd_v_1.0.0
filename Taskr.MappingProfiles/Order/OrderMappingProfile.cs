@@ -8,7 +8,7 @@ namespace Taskr.MappingProfiles.Order
         public OrderMappingProfile()
         {
             CreateMap<Domain.Bid, OrderBid>();
-            CreateMap<ApplicationUser, OrderUser>();
+            CreateMap<ApplicationUser, OrderUser>().ForMember(x => x.HasActiveBankAccount, opt => opt.MapFrom<HasBankAccountResolver>());
             CreateMap<Domain.Job, OrderJob>();
             CreateMap<Domain.Order, OrderDetailsDto>()
                 .ForMember(x => x.Chat, opt => opt.MapFrom<OrderChatResolver>());
