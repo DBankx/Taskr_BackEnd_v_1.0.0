@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Taskr.Domain
@@ -18,6 +19,7 @@ namespace Taskr.Domain
         public DateTime OrderStartedDate { get; set; }
         public DateTime PaymentCompletedDate { get; set; }
         public DateTime OrderCompletedDate { get; set; }
+        public ICollection<Review> Reviews { get; set; }
         public string CheckoutSessionId { get; set; }
     }
 

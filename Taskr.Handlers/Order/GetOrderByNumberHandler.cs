@@ -35,7 +35,7 @@ namespace Taskr.Handlers.Order
                 throw new RestException(HttpStatusCode.Unauthorized, new {error = "You are unauthorized"});
 
             var order = await _queryProcessor.Query<Domain.Order>().Include(x => x.Job)
-                .ThenInclude(x => x.Photos).Include(x => x.User).Include(x => x.PayTo).Include(x => x.AcceptedBid)
+                .ThenInclude(x => x.Photos).Include(x => x.User).Include(x => x.PayTo).Include(x => x.Reviews).ThenInclude(x => x.Reviewer).Include(x => x.AcceptedBid)
                 .SingleOrDefaultAsync(x => x.OrderNumber == request.OrderNumber, cancellationToken);
 
             if (order == null) throw new RestException(HttpStatusCode.NotFound, new {error = "Order not found"});

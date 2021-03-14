@@ -9,9 +9,11 @@ using Taskr.Commands.Profile;
 using Taskr.Domain;
 using Taskr.Dtos.Job;
 using Taskr.Dtos.Profile;
+using Taskr.Dtos.Review;
 using Taskr.Infrastructure.Pagination;
 using Taskr.Queries.Profile;
 using Taskr.Queries.PublicProfile;
+using Taskr.Queries.Review;
 using Taskr.Queries.UserNotifications;
 
 namespace Taskr.Api.Controllers.V1
@@ -129,6 +131,13 @@ namespace Taskr.Api.Controllers.V1
          public async Task<ActionResult<Unit>> CreateBankAccount(AddBankAccount command, CancellationToken ct)
          {
              return await _mediator.Send(command, ct);
+         }
+
+         [AllowAnonymous]
+         [HttpGet("reviews/{userId}")]
+         public async Task<ActionResult<List<ReviewDto>>> GetUserReviews([FromQuery] string predicate, string userId)
+         {
+             return await _mediator.Send(new GetUserReview(userId, predicate));
          }
     }
 }

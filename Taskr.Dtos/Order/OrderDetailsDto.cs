@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Taskr.Domain;
 using Taskr.Dtos.Chat;
+using Taskr.Dtos.Review;
 
 namespace Taskr.Dtos.Order
 {
@@ -22,5 +24,6 @@ namespace Taskr.Dtos.Order
         public DateTime OrderCompletedDate { get; set; }
         public string CheckoutSessionId { get; set; }
         public ChatDto Chat { get; set; }
+        public ICollection<ReviewDto> Reviews { get; set; }
     }
 }
