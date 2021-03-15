@@ -135,7 +135,7 @@ namespace Taskr.Api.Controllers.V1
 
          [AllowAnonymous]
          [HttpGet("reviews/{userId}")]
-         public async Task<ActionResult<List<ReviewDto>>> GetUserReviews([FromQuery] string predicate, string userId)
+         public async Task<ActionResult<ReturnReviewsDto>> GetUserReviews([FromQuery] string predicate, string userId)
          {
              return await _mediator.Send(new GetUserReview(userId, predicate));
          }

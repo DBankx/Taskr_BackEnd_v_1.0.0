@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using MediatR;
+using Taskr.Dtos.Profile;
 using Taskr.Dtos.Review;
 
 namespace Taskr.Queries.Review
 {
-    public class GetUserReview : IRequest<List<ReviewDto>>
+    public class GetUserReview : IRequest<ReturnReviewsDto>
     {
         public string UserId { get; set; }
         
