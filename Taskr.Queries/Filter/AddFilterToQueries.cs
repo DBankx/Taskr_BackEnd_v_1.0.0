@@ -23,10 +23,27 @@ namespace Taskr.Queries.Filter
                     x.InitialPrice >= filter.MinPrice && x.InitialPrice <= filter.MaxPrice);
             }
 
+            if (filter.Category.HasValue)
+            {
+                queryable = queryable.Where(x => x.Category == filter.Category);
+            }
+
+            if (filter.DeliveryType.HasValue)
+            {
+                queryable = queryable.Where(x => x.DeliveryType == filter.DeliveryType);
+            }
+            
+
             switch (filter.SortBy)
             {
                 case "OLDEST":
-                    queryable = queryable;
+                    queryable = queryable.OrderBy(x => x.CreatedAt);
+                    break;
+                case "LOWEST":
+                    queryable = queryable.OrderBy(x => x.InitialPrice);
+                    break;
+                case "HIGHEST":
+                    queryable = queryable.OrderByDescending(x => x.InitialPrice);
                     break;
                 default:
                     queryable = queryable.OrderByDescending(x => x.CreatedAt);
