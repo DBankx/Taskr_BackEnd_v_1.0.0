@@ -50,7 +50,7 @@ namespace Taskr.Queries.Filter
                     break;
             }
             
-            return queryable;
+            return queryable.Where(x => x.JobStatus == JobStatus.Active);
         }
 
         public static List<Job> FilterWatchlist(string sortBy, List<Job> queryable)

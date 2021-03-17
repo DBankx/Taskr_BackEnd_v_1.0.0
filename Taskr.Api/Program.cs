@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Taskr.Api.Background;
 using Taskr.Persistance;
 
 namespace Taskr.Api
@@ -40,7 +41,7 @@ namespace Taskr.Api
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             DotNetEnv.Env.Load();
-             return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+             return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); }).ConfigureServices(services => services.AddHostedService<HostedBackGroundService>());
         }
     }
 }

@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Stripe;
 using Taskr.Domain;
 using Taskr.Handlers.Task;
+using Taskr.Infrastructure.BackgroundServices;
 using Taskr.Infrastructure.Helpers;
 using Taskr.Infrastructure.Jwt;
 using Taskr.Infrastructure.Mail;
@@ -153,6 +154,7 @@ namespace Taskr.Api.Extensions
                          services.AddScoped<IPhotoService, PhotoService>();
                          services.AddScoped<IQueryProcessor, EfQueryProcessor>();
                          services.AddTransient<IMailService, MailService>();
+                         services.AddScoped<IJobEndingService, JobEndingService>();
 
                          return services;
         }
