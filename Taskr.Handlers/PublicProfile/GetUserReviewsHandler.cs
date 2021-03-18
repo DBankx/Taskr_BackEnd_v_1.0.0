@@ -16,7 +16,7 @@ using Taskr.Queries.Review;
 
 namespace Taskr.Handlers.PublicProfile
 {
-    public class GetUserReviewsHandler : IRequestHandler<GetUserReview, ReturnReviewsDto>
+    public class GetUserReviewsHandler : IRequestHandler<GetUserReview, List<ReviewDto>>
     {
         private readonly IQueryProcessor _queryProcessor;
         private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace Taskr.Handlers.PublicProfile
             _queryProcessor = queryProcessor;
             _mapper = mapper;
         }
-        public async Task<ReturnReviewsDto> Handle(GetUserReview request, CancellationToken cancellationToken)
+        public async Task<List<ReviewDto>> Handle(GetUserReview request, CancellationToken cancellationToken)
         {
             var user = await _queryProcessor.Query<ApplicationUser>().SingleOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
@@ -35,27 +35,22 @@ namespace Taskr.Handlers.PublicProfile
             var userReviews = _queryProcessor.Query<Domain.Review>().Include(x => x.Order).ThenInclude(x => x.Job)
                 .Include(x => x.Reviewer).Where(x => x.Reviewee == user).AsQueryable();
 
-            var returnReviews = new ReturnReviewsDto
-            {
-                ReviewsCount = userReviews.Count(),
-                AverageRating = userReviews.Average(x => x.Rating)
-            };
-
-
+            var returnReviews = new List<Domain.Review>();
+            
             switch (request.Predicate)
             {
                 case "Taskr":
-                    returnReviews.Reviews = _mapper.Map<List<ReviewDto>>(userReviews 
-                        .Where(x => x.Type == ReviewType.Taskr).ToList());
+                    returnReviews = userReviews 
+                        .Where(x => x.Type == ReviewType.Taskr).ToList();
                     break;
                 case "Runner":
-                      returnReviews.Reviews = _mapper.Map<List<ReviewDto>>(userReviews.Where(x =>  x.Type == ReviewType.Runner).ToList());
+                      returnReviews = userReviews.Where(x =>  x.Type == ReviewType.Runner).ToList();
                       break;
                 default:
                     break;
             }
 
-            return returnReviews;
+            return _mapper.Map<List<ReviewDto>>(returnReviews);
         }
     }
 }

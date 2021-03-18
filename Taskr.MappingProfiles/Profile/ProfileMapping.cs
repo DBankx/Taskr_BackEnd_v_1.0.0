@@ -8,7 +8,8 @@ namespace Taskr.MappingProfiles.Profile
         public ProfileMapping()
         {
             CreateMap<ApplicationUser, ProfileDto>();
-            CreateMap<ApplicationUser, PublicProfileDto>();
+            CreateMap<ApplicationUser, PublicProfileDto>()
+                .ForMember(x => x.AvgReviewRating, opt => opt.MapFrom<AvgRatingResolver>()).ForMember(x => x.ReviewsCount, opt => opt.MapFrom<ReviewCountResolver>());
         }
     }
 }

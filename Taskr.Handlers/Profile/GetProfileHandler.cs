@@ -44,6 +44,9 @@ namespace Taskr.Handlers.Profile
                 .ThenInclude(x => x.User)
                 .Where(x => x.User == user)
                 .ToListAsync(cancellationToken);
+            
+                  var userReviews = await _queryProcessor.Query<Domain.Review>().Include(x => x.Order).ThenInclude(x => x.Job)
+                                .Include(x => x.Reviewer).Where(x => x.Reviewee == user).ToListAsync(cancellationToken);
 
             var profile = new ProfileDto
             {
@@ -61,7 +64,9 @@ namespace Taskr.Handlers.Profile
                 Languages = user.Languages,
                 Socials = user.Socials,
                 Tagline = user.Tagline,
-                BankAccount = user.BankAccount
+                BankAccount = user.BankAccount,
+                AvgReviewRating = userReviews.Any() ? userReviews.Average(x => x.Rating) : 0,
+                ReviewsCount = userReviews.Count()
             };
 
             return profile;

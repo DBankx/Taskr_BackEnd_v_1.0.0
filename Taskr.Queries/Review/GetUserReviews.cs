@@ -5,7 +5,7 @@ using Taskr.Dtos.Review;
 
 namespace Taskr.Queries.Review
 {
-    public class GetUserReview : IRequest<ReturnReviewsDto>
+    public class GetUserReview : IRequest<List<ReviewDto>>
     {
         public string UserId { get; set; }
         

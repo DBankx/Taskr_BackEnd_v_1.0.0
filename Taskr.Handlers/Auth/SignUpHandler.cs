@@ -47,7 +47,7 @@ namespace Taskr.Handlers.Auth
                    City = request.City,
                    UserName = request.Username,
                    CreatedAt = DateTime.Now,
-                   Avatar = $"https://ui-avatars.com/api/?name=${request.Username}&rounded=true&bold=true&background=FCDADC&color=3D3373"
+                   Avatar = $"https://ui-avatars.com/api/?name={request.Username}&rounded=true&bold=true&background=FCDADC&color=3D3373"
                };
          
              var created = await _userManager.CreateAsync(user, request.Password);

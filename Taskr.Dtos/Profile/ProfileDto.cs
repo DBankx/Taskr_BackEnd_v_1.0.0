@@ -23,5 +23,7 @@ namespace Taskr.Dtos.Profile
         public ICollection<Language> Languages { get; set; }
         public Socials Socials { get; set; }
         public string Tagline { get; set; }
+        public double AvgReviewRating { get; set; }
+        public int ReviewsCount { get; set; }
     }
 }
