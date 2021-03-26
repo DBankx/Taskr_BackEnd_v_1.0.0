@@ -20,22 +20,15 @@ namespace Taskr.Api.Controllers.V1
         }
 
         [HttpPost("signup")]
-        public async Task<ActionResult> SignUp([FromBody] SignUpCommand command)
-        {
-            var authResponse = await _mediator.Send(command);
-            if (!authResponse.Success)
-            {
-                return BadRequest(new AuthErrorResponse
-                {
-                    Errors = authResponse.Errors
-                });
-            }
+        public async Task<ActionResult<Unit>> SignUp([FromBody] SignUpCommand command)
+        { 
+            return await _mediator.Send(command);
+        }
 
-            return Ok(new AuthSuccessResponse
-            {
-                Token = authResponse.Token,
-                User = authResponse.User
-            });
+        [HttpPost("confirm-email")]
+        public async Task<ActionResult<Unit>> ConfirmEmail([FromQuery] string userId, [FromQuery] string code)
+        {
+            return await _mediator.Send(new ConfirmEmail(userId, code));
         }
 
         [HttpPost("signIn")]

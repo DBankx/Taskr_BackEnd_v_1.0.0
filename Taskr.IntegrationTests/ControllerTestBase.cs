@@ -33,8 +33,7 @@ namespace Taskr.IntegrationTests
             var randomGuid = Guid.NewGuid();
             var response = await client.PostAsJsonAsync("api/v1/auth/signup", new SignUpCommand
             {
-                Bio = "i am a test",
-                City = "test city",
+                Country = "test city",
                 Email = $"{randomGuid.ToString()}@test.com",
                 Password = "Pa$$w0rd",
                 FirstName = "integration",

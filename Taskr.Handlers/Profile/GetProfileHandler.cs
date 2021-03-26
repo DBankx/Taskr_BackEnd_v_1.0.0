@@ -53,7 +53,7 @@ namespace Taskr.Handlers.Profile
                 Id = user.Id,
                 Avatar = user.Avatar,
                 Bio = user.Bio,
-                City = user.City,
+                City = user.Country,
                 Email = user.Email,
                 EmailConfirmed = user.EmailConfirmed,
                 CreatedAt = user.CreatedAt,
